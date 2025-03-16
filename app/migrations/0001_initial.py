@@ -12,6 +12,7 @@ class Migration(migrations.Migration):
     operations = [
         migrations.CreateModel(
             name="Nationality",
+            options={"ordering": ["demonym"]},
             fields=[
                 (
                     "id",
@@ -26,14 +27,12 @@ class Migration(migrations.Migration):
                     "demonym",
                     models.CharField(
                         max_length=255,
-                        unique=True,
                     ),
                 ),
                 (
                     "country",
                     models.CharField(
                         max_length=255,
-                        unique=True,
                     ),
                 ),
             ],

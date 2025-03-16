@@ -17,8 +17,7 @@ iniconfig==2.0.0
 mypy-extensions==1.0.0
     # via black
 packaging==24.2
-    # viadjango ~= 4.2
-
+    # via
     #   black
     #   pytest
 pathspec==0.12.1
