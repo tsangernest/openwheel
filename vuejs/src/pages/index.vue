@@ -70,6 +70,7 @@ export default {
     return {
       // Data from eps
       nationalities: [],
+      drivers: [],
 
 
       // Toggles
@@ -82,17 +83,26 @@ export default {
   },
 
   mounted() {
-    this.getNationalities()
+    //this.getNationalities()
+    this.getDrivers()
   },
   methods: {
-    getNationalities() {
+    getDrivers() {
       axios
-        .get('')
-        .then(response => {
-          console.log(response)
-        })
-        .catch(e => { console.error(e) })
+        .get('/driver')
+        .then(response => { this.drivers = response.data })
+        .catch(e => console.log(e))
     }
+
+    //getNationalities() {
+    //  axios
+    //    .get('/api/v1/driver')
+    //    .then(response => {
+    //      console.log(response)
+    //      this.drivers = response.data
+    //    })
+    //    .catch(e => { console.error(e) })
+    //}
   }
 }
 </script>
