@@ -43,7 +43,9 @@
           </div>
         </nav>
 
-        <v-data-table/>
+        <v-data-table
+          :headers="driverHeaders"
+        />
 
         <section class="section">
           <router-view/>
@@ -72,9 +74,22 @@ export default {
       nationalities: [],
       drivers: [],
 
+      // Driver table
+      driverHeaders: [
+        // { title: 'ID', key: 'id', align: 'start', sortable: false },
+        { title: 'DriverRef', key: 'ref', alight: 'start', sortable: false },
+        { title: 'Driver No.', key: 'number', sortable: false },
+        { title: 'Code', key: 'code', sortable: false },
+        { title: 'First name', key: 'forename', sortable: true },
+        { title: 'Last name', key: 'surname', sortable: true },
+        { title: 'Date of Birth', key: 'date_of_birth', sortable: true },
+        { title: 'Nationality', key: 'nationality', sortable: true },
+        // { title: 'Wiki URL', key: 'url', sortable: false },
+      ],
 
       // Toggles
       showMobileMenu: false,
+
     }
   },
 
@@ -90,7 +105,9 @@ export default {
     getDrivers() {
       axios
         .get('/driver')
-        .then(response => { this.drivers = response.data })
+        .then(response => {
+          this.drivers = response.data.results
+         })
         .catch(e => console.log(e))
     }
 
