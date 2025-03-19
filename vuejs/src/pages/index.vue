@@ -45,6 +45,8 @@
 
         <v-data-table
           :headers="driverHeaders"
+          :items="drivers"
+          density="compact"
         />
 
         <section class="section">
@@ -81,12 +83,15 @@ export default {
         { title: 'DriverRef', key: 'ref', alight: 'start', sortable: false },
         { title: 'Driver No.', key: 'number', sortable: false },
         { title: 'Code', key: 'code', sortable: false },
-        { title: 'First name', key: 'forename', sortable: true },
-        { title: 'Last name', key: 'surname', sortable: true },
+        { title: 'First Name', key: 'forename', sortable: true },
+        { title: 'Last Name', key: 'surname', sortable: true },
         { title: 'Date of Birth', key: 'date_of_birth', sortable: true },
         { title: 'Nationality', key: 'nationality', sortable: true },
         // { title: 'Wiki URL', key: 'url', sortable: false },
       ],
+
+
+
 
       // Toggles
       showMobileMenu: false,
