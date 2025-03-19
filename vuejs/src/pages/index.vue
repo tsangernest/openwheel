@@ -62,6 +62,7 @@
 
 
 
+
 <script>
 import axios from 'axios'
 
@@ -101,13 +102,12 @@ export default {
     //this.getNationalities()
     this.getDrivers()
   },
+
   methods: {
     getDrivers() {
       axios
         .get('/driver')
-        .then(response => {
-          this.drivers = response.data.results
-         })
+        .then(response => { this.drivers = response.data.results; console.log(this.drivers); })
         .catch(e => console.log(e))
     }
 
