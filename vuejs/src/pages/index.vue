@@ -46,6 +46,8 @@
         <v-data-table
           :headers="driverHeaders"
           :items="drivers"
+
+          :loading="driverTableLoading"
           density="compact"
         />
 
@@ -76,10 +78,10 @@ export default {
       // Data from eps
       nationalities: [],
       drivers: [],
-
+      driverTableLoading: false,
       // Driver table
       driverHeaders: [
-        // { title: 'ID', key: 'id', align: 'start', sortable: false },
+        { title: 'ID', key: 'id', align: 'start' },
         { title: 'DriverRef', key: 'ref', alight: 'start', sortable: false },
         { title: 'Driver No.', key: 'number', sortable: false },
         { title: 'Code', key: 'code', sortable: false },
@@ -90,42 +92,26 @@ export default {
         // { title: 'Wiki URL', key: 'url', sortable: false },
       ],
 
-
-
-
       // Toggles
       showMobileMenu: false,
 
     }
   },
 
-  components: {
-
-  },
-
   mounted() {
-    //this.getNationalities()
     this.getDrivers()
   },
 
   methods: {
     getDrivers() {
+      this.driverTableLoading = true
       axios
         .get('/driver')
-        .then(response => { this.drivers = response.data.results; console.log(this.drivers); })
+        .then(response => { this.drivers = response.data })
         .catch(e => console.log(e))
-    }
-
-    //getNationalities() {
-    //  axios
-    //    .get('/api/v1/driver')
-    //    .then(response => {
-    //      console.log(response)
-    //      this.drivers = response.data
-    //    })
-    //    .catch(e => { console.error(e) })
-    //}
-  }
+        .finally(() => { this.driverTableLoading = false })
+    },
+  },
 }
 </script>
 

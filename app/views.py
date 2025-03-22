@@ -16,7 +16,7 @@ class NationalityViewSet(viewsets.ModelViewSet):
 class DriverViewSet(viewsets.ModelViewSet):
     queryset = Driver.objects.all()
     serializer_class = DriverSerializer
-    pagination_class = OpenWheelBasePaginator
+    pagination_class = None
 
     filter_backends = [
         DjangoFilterBackend,
