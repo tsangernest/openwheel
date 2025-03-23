@@ -44,17 +44,15 @@
         </nav>
 
         <v-data-table-server
-          :headers="driverHeaders"
-          :items="drivers"
-
           v-model:items-per-page="itemsPerPage"
 
+          :headers="driverHeaders"
+          :items="drivers"
           :items-length="totalItems"
           :items-per-page-options="itemsPerPageOptions"
 
-          @update:options="getDrivers"
-
           :loading="driverTableLoading"
+          @update:options="getDrivers"
           density="compact"
         />
 
@@ -82,10 +80,8 @@ export default {
 
   data() {
     return {
-      // Data from eps
-
+      // * BEGIN Driver table *
       driverTableLoading: false,
-      // Driver table
       driverHeaders: [
         { title: 'ID', key: 'id', align: 'start' },
         { title: 'DriverRef', key: 'ref', alight: 'start', sortable: false },
@@ -97,13 +93,9 @@ export default {
         { title: 'Nationality', key: 'nationality', sortable: true },
         // { title: 'Wiki URL', key: 'url', sortable: false },
       ],
-
-      itemsPerPage: 10,
-      itemsPerPageOptions: [5, 10, 25, 100, -1],
-      sortBy: 'id',
-      totalItems: 0,
-
+      itemsPerPageOptions: [5, 10, 25, 100],
       drfParams: {},
+      // * END Drivers Table *
 
       // Toggles
       showMobileMenu: false,
@@ -111,11 +103,14 @@ export default {
   },
 
   methods: {
-    getDrivers() {
+    getDrivers({ page, itemsPerPage, sortBy }) {
       this.driverTableLoading = true
 
-      this.drfParams['page-size'] = this.itemsPerPage
-      this.drfParams['ordering'] = this.sortBy
+      if(sortBy.length > 0) {
+        let direction = sortBy[0].order === 'asc' ? '+' : '-'
+        this.drfParams['ordering'] = `${direction}${sortBy[0].key}`
+      }
+      this.drfParams['page-size'] = itemsPerPage
 
       axios
         .get('/driver', { params: { ...this.drfParams } } )
@@ -125,17 +120,8 @@ export default {
     },
 
     processPagination(data) {
-      console.log(data)
-
       this.totalItems = data['count']
       this.drivers = data['results']
-
-
-      // * END *
-      console.log("\nEND handlePagination")
-      console.log("%o=", this.itemsPerPage)
-      console.log("%o=", this.totalItems)
-      console.log("%o=", this.sortBy)
     },
   },
 }
