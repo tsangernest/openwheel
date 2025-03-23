@@ -43,9 +43,16 @@
           </div>
         </nav>
 
-        <v-data-table
+        <v-data-table-server
           :headers="driverHeaders"
           :items="drivers"
+
+          v-model:items-per-page="itemsPerPage"
+
+          :items-length="totalItems"
+          :items-per-page-options="itemsPerPageOptions"
+
+          @update:options="getDrivers"
 
           :loading="driverTableLoading"
           density="compact"
@@ -76,8 +83,7 @@ export default {
   data() {
     return {
       // Data from eps
-      nationalities: [],
-      drivers: [],
+
       driverTableLoading: false,
       // Driver table
       driverHeaders: [
@@ -92,24 +98,44 @@ export default {
         // { title: 'Wiki URL', key: 'url', sortable: false },
       ],
 
+      itemsPerPage: 10,
+      itemsPerPageOptions: [5, 10, 25, 100, -1],
+      sortBy: 'id',
+      totalItems: 0,
+
+      drfParams: {},
+
       // Toggles
       showMobileMenu: false,
-
     }
-  },
-
-  mounted() {
-    this.getDrivers()
   },
 
   methods: {
     getDrivers() {
       this.driverTableLoading = true
+
+      this.drfParams['page-size'] = this.itemsPerPage
+      this.drfParams['ordering'] = this.sortBy
+
       axios
-        .get('/driver')
-        .then(response => { this.drivers = response.data })
+        .get('/driver', { params: { ...this.drfParams } } )
+        .then(response => { this.processPagination(response.data) })
         .catch(e => console.log(e))
         .finally(() => { this.driverTableLoading = false })
+    },
+
+    processPagination(data) {
+      console.log(data)
+
+      this.totalItems = data['count']
+      this.drivers = data['results']
+
+
+      // * END *
+      console.log("\nEND handlePagination")
+      console.log("%o=", this.itemsPerPage)
+      console.log("%o=", this.totalItems)
+      console.log("%o=", this.sortBy)
     },
   },
 }
