@@ -107,8 +107,8 @@ export default {
       this.driverTableLoading = true
 
       if(sortBy.length > 0) {
-        let direction = sortBy[0].order === 'asc' ? '+' : '-'
-        this.drfParams['ordering'] = `${direction}${sortBy[0].key}`
+        let sortDirection = sortBy[0].order === 'asc' ? '' : '-'
+        this.drfParams['ordering'] = `${sortDirection}${sortBy[0].key}`
       }
       this.drfParams['page-size'] = itemsPerPage
 
