@@ -110,6 +110,7 @@ export default {
         let sortDirection = sortBy[0].order === 'asc' ? '' : '-'
         this.drfParams['ordering'] = `${sortDirection}${sortBy[0].key}`
       }
+      this.drfParams['page'] = page
       this.drfParams['page-size'] = itemsPerPage
 
       axios
