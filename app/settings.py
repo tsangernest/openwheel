@@ -1,4 +1,5 @@
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -12,7 +13,7 @@ SECRET_KEY = "django-insecure-0)l8gl3(trzp-gyfmu1kifx3ivv4g=!g_vwr18n=9e*!#4vah^
 DEBUG = True
 
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.getenv(key="DJANGO_ALLOWED_HOSTS", default="127.0.0.1").split(",")
 
 
 # Application definition
@@ -75,9 +76,13 @@ TEMPLATES = [
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
+        "ENGINE": f"django.db.backends.{os.getenv(key='DATABASE_ENGINE', default='sqlite3')}",
+        "NAME": f"{os.getenv(key='DATABASE_NAME', default='db.sqlite3')}",
+        "USER": f"{os.getenv(key='DATABASE_USERNAME', default='dbuser')}",
+        "PASSWORD": f"{os.getenv(key='DATABASE_PASSWORD', default='userpass')}",
+        "HOST": f"{os.getenv(key='DATABASE_HOST', default='127.0.0.1')}",
+        "PORT": f"{os.getenv(key='DATABASE_PORT', default='5432')}",
+    },
 }
 
 
