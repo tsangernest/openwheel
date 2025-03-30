@@ -4,3 +4,4 @@ __pycache__/
 .gitignore
 vuejs/node_modules/
 tasks.py
+db.sqlite3

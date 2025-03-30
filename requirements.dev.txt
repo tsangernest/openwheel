@@ -18,10 +18,14 @@ invoke==2.2.0
     # via -r requirements.dev.in
 mypy-extensions==1.0.0
     # via black
+numpy==2.2.4
+    # via pandas
 packaging==24.2
     # via
     #   black
     #   pytest
+pandas==2.2.3
+    # via -r requirements.dev.in
 pathspec==0.12.1
     # via black
 pdbpp==0.10.3
@@ -40,5 +44,13 @@ pytest==8.3.5
     #   pytest-repeat
 pytest-repeat==0.9.3
     # via -r requirements.dev.in
+python-dateutil==2.9.0.post0
+    # via pandas
+pytz==2025.2
+    # via pandas
+six==1.17.0
+    # via python-dateutil
+tzdata==2025.2
+    # via pandas
 wmctrl==0.5
     # via pdbpp
