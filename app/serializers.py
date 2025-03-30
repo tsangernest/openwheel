@@ -1,11 +1,9 @@
 from rest_framework import serializers
 
-from app.models import (
-    Circuit,
-    Constructor,
-    Driver,
-    Nationality,
-)
+from app.models import (Circuit,
+                        Constructor,
+                        Driver,
+                        Nationality)
 
 
 class NationalitySerializer(serializers.ModelSerializer):
