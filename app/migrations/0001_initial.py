@@ -26,20 +26,17 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "demonym",
-                    models.CharField(
-                        max_length=255,
-                    ),
+                    models.CharField(max_length=255),
                 ),
                 (
                     "country",
-                    models.CharField(
-                        max_length=255,
-                    ),
+                    models.CharField(max_length=255),
                 ),
             ],
         ),
         migrations.CreateModel(
             name="Driver",
+            options={"ordering": ["id"]},
             fields=[
                 (
                     "id",
@@ -50,13 +47,34 @@ class Migration(migrations.Migration):
                         verbose_name="ID",
                     ),
                 ),
-                ("ref", models.CharField(blank=True, max_length=255)),
-                ("number", models.CharField(blank=True, max_length=255)),
-                ("code", models.CharField(blank=True, max_length=6)),
-                ("forename", models.CharField(blank=True, max_length=255)),
-                ("surname", models.CharField(blank=True, max_length=255)),
-                ("date_of_birth", models.DateField(blank=True)),
-                ("url", models.URLField()),
+                (
+                    "ref",
+                    models.CharField(blank=True, max_length=255),
+                ),
+                (
+                    "number",
+                    models.CharField(blank=True, max_length=255),
+                ),
+                (
+                    "code",
+                    models.CharField(blank=True, max_length=6),
+                ),
+                (
+                    "forename",
+                    models.CharField(blank=True, max_length=255),
+                ),
+                (
+                    "surname",
+                    models.CharField(max_length=255),
+                ),
+                (
+                    "date_of_birth",
+                    models.DateField(blank=True),
+                ),
+                (
+                    "url",
+                    models.URLField(blank=True),
+                ),
                 (
                     "nationality",
                     models.ForeignKey(
@@ -66,9 +84,92 @@ class Migration(migrations.Migration):
                     ),
                 ),
             ],
-            options={
-                "ordering": ["id"],
-            },
+        ),
+        migrations.CreateModel(
+            name="Constructor",
+            options={"ordering": ["id"]},
+            fields=[
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "ref",
+                    models.CharField(blank=True, max_length=255),
+                ),
+                (
+                    "name",
+                    models.CharField(max_length=255),
+                ),
+                (
+                    "url",
+                    models.URLField(blank=True),
+                ),
+                (
+                    "nationality",
+                    models.ForeignKey(
+                        blank=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        to="app.nationality",
+                    ),
+                ),
+            ],
+        ),
+        migrations.CreateModel(
+            name="Circuit",
+            options={"ordering": ["id"]},
+            fields=[
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "ref",
+                    models.CharField(blank=True, max_length=255),
+                ),
+                (
+                    "name",
+                    models.CharField(max_length=255),
+                ),
+                (
+                    "location",
+                    models.CharField(blank=True, max_length=255),
+                ),
+                (
+                    "country",
+                    models.ForeignKey(
+                        blank=True,
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        to="app.nationality",
+                    ),
+                ),
+                (
+                    "longitude",
+                    models.DecimalField(blank=True, max_digits=32, decimal_places=16),
+                ),
+                (
+                    "latitude",
+                    models.DecimalField(blank=True, max_digits=32, decimal_places=16),
+                ),
+                (
+                    "altitude",
+                    models.IntegerField(blank=True, help_text="Measured in meters"),
+                ),
+                (
+                    "url",
+                    models.URLField(blank=True),
+                ),
+            ],
         ),
     ]
 
