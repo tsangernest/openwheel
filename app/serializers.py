@@ -1,5 +1,3 @@
-from functools import cached_property
-
 from rest_framework import serializers
 
 from app.models import (
