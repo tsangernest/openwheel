@@ -171,5 +171,84 @@ class Migration(migrations.Migration):
                 ),
             ],
         ),
+        migrations.CreateModel(
+            name="Race",
+            options={"ordering": ["-date_of_race"]},
+            fields=[
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "name",
+                    models.CharField(max_length=255),
+                ),
+                (
+                    "date_of_race",
+                    models.DateTimeField(),
+                ),
+                (
+                    "round_number",
+                    models.PositiveIntegerField(),
+                ),
+                (
+                    "url",
+                    models.URLField(blank=True),
+                ),
+                (
+                    "circuit",
+                    models.ForeignKey(
+                        to="app.circuit",
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                    ),
+                ),
+            ],
+        ),
+        migrations.CreateModel(
+            name="Qualifying",
+            options={"ordering": ["id"]},
+            fields=[
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "position",
+                    models.PositiveIntegerField(),
+                ),
+                (
+                    "constructor",
+                    models.ForeignKey(
+                        to="app.constructor",
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                    ),
+                ),
+                (
+                    "driver",
+                    models.ForeignKey(
+                        to="app.driver",
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                    ),
+                ),
+                (
+                    "race",
+                    models.ForeignKey(
+                        to="app.race",
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="quali",
+                    ),
+                ),
+            ],
+        ),
     ]
 

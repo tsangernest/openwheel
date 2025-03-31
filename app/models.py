@@ -64,3 +64,30 @@ class Circuit(models.Model):
     def __str__(self):
         return f"{self.name}"
 
+
+class Race(models.Model):
+    name = models.CharField(max_length=255)
+    circuit = models.ForeignKey(to="Circuit", on_delete=models.DO_NOTHING)
+    date_of_race = models.DateTimeField()
+    round_number = models.PositiveIntegerField()
+    url = models.URLField(blank=True)
+
+    class Meta:
+        ordering = ["-date_of_race"]
+
+    def __str__(self):
+        return f"{self.name}, {self.date_of_race}"
+
+
+class Qualifying(models.Model):
+    race = models.ForeignKey(to="Race", on_delete=models.DO_NOTHING, related_name="quali")
+    driver = models.ForeignKey(to="Driver", on_delete=models.DO_NOTHING)
+    constructor = models.ForeignKey(to="Constructor", on_delete=models.DO_NOTHING)
+    position = models.PositiveIntegerField()
+
+    class Meta:
+        ordering = ["id"]
+
+    def __str__(self):
+        return f"{self.race.name}, {self.driver.surname}, #{self.position}"
+
