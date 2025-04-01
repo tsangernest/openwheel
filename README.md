@@ -45,5 +45,5 @@ General:
 
 Qualifying Table:
 * python time does not support microseconds. datetime does,
-* I'm not sure if there's an elegant way to do this since creating a datetime object seems to not like all 0's for year/month/day. seems odd to me that postgres supports 'allballs' for zero time. need to do more research on this
-  
+* I'm not sure if there's an elegant way to do this since creating a datetime object seems to not like all 0's for year/month/day. seems odd to me that postgres supports 'allballs' for zero datetime. need to do more research on this
+
