@@ -11,9 +11,9 @@ def virtualenvironment(c, update=False):
     c.run("pip install -U setuptools wheel psycopg2-binary", pty=True)
 
     if update:
-        c.run("pip-compile requirements.in requirements.dev.in", pty=True)
+        c.run("pip-compile requirements.in", pty=True)
 
-    c.run("pip install -r requirements.txt -r requirements.dev.txt --no-cache-dir", pty=True)
+    c.run("pip install -r requirements.txt --no-cache-dir", pty=True)
 
 
 @task

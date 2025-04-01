@@ -9,7 +9,6 @@ WORKDIR /app
 
 
 COPY requirements.txt /app/
-COPY requirements.dev.txt /app/
 
 
 WORKDIR /var
@@ -21,7 +20,7 @@ WORKDIR /app
 
 RUN pip install --upgrade pip
 RUN pip install -U setuptools wheel psycopg2-binary
-RUN pip install -r requirements.txt -r requirements.dev.txt --no-cache-dir
+RUN pip install -r requirements.txt --no-cache-dir
 
 
 COPY . .
