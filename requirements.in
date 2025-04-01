@@ -8,3 +8,13 @@ pillow
 
 stripe
 
+pandas
+
+# below dev stuff
+pytest
+pytest-repeat
+
+black
+pdbpp
+invoke
+

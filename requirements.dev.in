@@ -1,8 +1,0 @@
-pytest
-pytest-repeat
-
-black
-pdbpp
-invoke
-
-pandas
