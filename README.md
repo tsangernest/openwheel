@@ -1,7 +1,7 @@
 MISSION: 
 1. Found F1 data,
-2. use as sandbox to sandbox different tech with a lot of data i'm interested in?.
-3. allow me to be myself, so i can focus better at the place where i conduct 'bizness' :')
+2. Use as sandbox to tryout different tech with a lot of data i'm interested in?
+3. So i can focus better at the place where i conduct bizness :')
 
 
 TECHNOLOGY Summary (full info in requirements.txt):
@@ -19,6 +19,7 @@ TOP TOP priority:
 
 Next (top down priority):
 ---
+* What to do with qualifying?
 * detailed view
 * finish full CRUD operations in UI
 * get app in container to reload on command
@@ -49,4 +50,5 @@ General:
 Qualifying Table:
 * python time does not support microseconds. datetime does,
 * I'm not sure if there's an elegant way to do this since creating a datetime object seems to not like all 0's for year/month/day. seems odd to me that postgres supports 'allballs' for zero datetime. need to do more research on this
+
 
