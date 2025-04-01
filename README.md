@@ -1,4 +1,7 @@
-MISSION: Found F1 data, and sandbox different tech with a lot of data i'm interested in?
+MISSION: 
+1. Found F1 data,
+2. use as sandbox to sandbox different tech with a lot of data i'm interested in?.
+3. allow me to be myself, so i can focus better at the place where i conduct 'bizness' :')
 
 
 TECHNOLOGY Summary (full info in requirements.txt):
