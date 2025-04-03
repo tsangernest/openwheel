@@ -227,6 +227,18 @@ class Migration(migrations.Migration):
                     models.PositiveIntegerField(),
                 ),
                 (
+                    "q_one",
+                    models.DurationField(blank=True, null=True),
+                ),
+                (
+                    "q_two",
+                    models.DurationField(blank=True, null=True),
+                ),
+                (
+                    "q_three",
+                    models.DurationField(blank=True, null=True),
+                ),
+                (
                     "constructor",
                     models.ForeignKey(
                         to="app.constructor",

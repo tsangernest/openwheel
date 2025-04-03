@@ -84,10 +84,13 @@ class Qualifying(models.Model):
     driver = models.ForeignKey(to="Driver", on_delete=models.DO_NOTHING)
     constructor = models.ForeignKey(to="Constructor", on_delete=models.DO_NOTHING)
     position = models.PositiveIntegerField()
+    q_one = models.DurationField(blank=True, null=True)
+    q_two = models.DurationField(blank=True, null=True)
+    q_three = models.DurationField(blank=True, null=True)
 
     class Meta:
         ordering = ["id"]
 
     def __str__(self):
-        return f"{self.race.name}, {self.driver.surname}, #{self.position}"
+        return f"{self.race.name}, {self.driver.surname}, Starting Grid #{self.position}"
 
