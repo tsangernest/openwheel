@@ -7,11 +7,15 @@ from app.pagination import OpenWheelBasePaginator
 from app.models import (Circuit,
                         Constructor,
                         Driver,
-                        Nationality)
+                        Nationality,
+                        Race,
+                        Qualifying)
 from app.serializers import (CircuitSerializer,
                              ConstructorSerializer,
                              DriverSerializer,
-                             NationalitySerializer)
+                             NationalitySerializer,
+                             RaceSerializer,
+                             QualifyingSerializer)
 
 
 class NationalityViewSet(viewsets.ModelViewSet):
@@ -46,4 +50,16 @@ class ConstructorViewSet(viewsets.ModelViewSet):
 class CircuitViewSet(viewsets.ModelViewSet):
     queryset = Circuit.objects.all()
     serializer_class = CircuitSerializer
+
+
+class RaceViewSet(viewsets.ModelViewSet):
+    queryset = Race.objects.all()
+    serializer_class = RaceSerializer
+    pagination_class = OpenWheelBasePaginator
+
+
+class QualifyingViewSet(viewsets.ModelViewSet):
+    queryset = Qualifying.objects.all()
+    serializer_class = QualifyingSerializer
+    pagination_class = OpenWheelBasePaginator
 

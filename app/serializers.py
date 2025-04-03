@@ -3,7 +3,9 @@ from rest_framework import serializers
 from app.models import (Circuit,
                         Constructor,
                         Driver,
-                        Nationality)
+                        Nationality,
+                        Race,
+                        Qualifying)
 
 
 class NationalitySerializer(serializers.ModelSerializer):
@@ -14,10 +16,10 @@ class NationalitySerializer(serializers.ModelSerializer):
 
 class DriverSerializer(serializers.ModelSerializer):
     surname = serializers.CharField(required=True)
+    date_of_birth = serializers.DateField(format="%d-%b-%Y")
     nationality = serializers.PrimaryKeyRelatedField(queryset=Nationality.objects.all(),
                                                      source="nationality.demonym",
                                                      required=False)
-    date_of_birth = serializers.DateField(format="%d-%b-%Y")
 
     class Meta:
         model = Driver
@@ -37,10 +39,10 @@ class ConstructorSerializer(serializers.ModelSerializer):
 
 class CircuitSerializer(serializers.ModelSerializer):
     name = serializers.CharField(required=True)
+    coordinates = serializers.StringRelatedField()
     country = serializers.PrimaryKeyRelatedField(queryset=Nationality.objects.all(),
                                                  source="country.country",
                                                  required=False)
-    coordinates = serializers.StringRelatedField()
 
     class Meta:
         model = Circuit
@@ -56,4 +58,31 @@ class CircuitSerializer(serializers.ModelSerializer):
 
     def get_coordinates(self, obj) -> str:
         return f"{obj.coordinates}"
+
+
+class RaceSerializer(serializers.ModelSerializer):
+    date_of_race = serializers.DateTimeField(format="%d-%b-%Y")
+    circuit = serializers.PrimaryKeyRelatedField(queryset=Circuit.objects.all(),
+                                                 source="circuit.name",
+                                                 required=True)
+
+    class Meta:
+        model = Race
+        fields = "__all__"
+
+
+class QualifyingSerializer(serializers.ModelSerializer):
+    race = serializers.PrimaryKeyRelatedField(queryset=Qualifying.objects.all(),
+                                              source="race.name",
+                                              required=True)
+    driver = serializers.PrimaryKeyRelatedField(queryset=Driver.objects.all(),
+                                                source="driver.surname",
+                                                required=True)
+    constructor = serializers.PrimaryKeyRelatedField(queryset=Constructor.objects.all(),
+                                                     source="constructor.name",
+                                                     required=True)
+
+    class Meta:
+        model = Qualifying
+        fields = "__all__"
 
