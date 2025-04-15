@@ -34,11 +34,11 @@ class DriverViewSet(viewsets.ModelViewSet):
     ]
 
     ordering_fields = [
-        "id",
+        # "id",
         "surname",
         "forename",
-        "date_of_birth",
-        "nationality",
+        # "date_of_birth",
+        # "nationality",
     ]
 
 

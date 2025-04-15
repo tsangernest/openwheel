@@ -262,5 +262,46 @@ class Migration(migrations.Migration):
                 ),
             ],
         ),
+        migrations.CreateModel(
+            name="LapTimes",
+            fields=[
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "lap_number",
+                    models.PositiveIntegerField(),
+                ),
+                (
+                    "position",
+                     models.PositiveIntegerField(),
+                ),
+                (
+                    "lap_time",
+                    models.DurationField(blank=True, null=True),
+                ),
+                (
+                    "driver",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        to="app.driver",
+                    ),
+                ),
+                (
+                    "race",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="lap_times",
+                        to="app.race",
+                    ),
+                ),
+            ],
+        ),
     ]
 
