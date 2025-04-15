@@ -102,3 +102,8 @@ class LapTime(models.Model):
     position = models.PositiveIntegerField()
     time = models.DurationField(blank=True, null=True)
 
+    class Meta:
+        ordering = ["race"]
+    
+    def __str__(self):
+        return f"{self.race.name}, {self.driver.surname}, {self.lap_number}, {self.position}"
