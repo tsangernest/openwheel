@@ -263,7 +263,7 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.CreateModel(
-            name="LapTimes",
+            name="LapTime",
             fields=[
                 (
                     "id",
@@ -283,7 +283,7 @@ class Migration(migrations.Migration):
                      models.PositiveIntegerField(),
                 ),
                 (
-                    "lap_time",
+                    "time",
                     models.DurationField(blank=True, null=True),
                 ),
                 (

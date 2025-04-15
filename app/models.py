@@ -95,10 +95,10 @@ class Qualifying(models.Model):
         return f"{self.race.name}, {self.driver.surname}, Starting Grid #{self.position}"
 
 
-class LapTimes(models.Model):
+class LapTime(models.Model):
     race = models.ForeignKey(to="Race", on_delete=models.DO_NOTHING, related_name="lap_times")
     driver = models.ForeignKey(to="Driver", on_delete=models.DO_NOTHING)
     lap_number = models.PositiveIntegerField()
     position = models.PositiveIntegerField()
-    lap_time = models.DurationField(blank=True, null=True)
+    time = models.DurationField(blank=True, null=True)
 

@@ -186,6 +186,38 @@ def insert_qualifying(apps, schema_editor):
         Qualifying.objects.bulk_create(quali_objs)
 
 
+def insert_lap_times(apps, schema_editor):
+    with open(file=f"{CSV_DATA_PATH}f1/lap_times.csv",
+              mode="r",
+              encoding="utf-8") as f:
+        cols = [
+            "raceId",
+            "driverId",
+            "lap",
+            "position",
+            "milliseconds",
+        ]
+        csvfile = pandas.read_csv(f, header=0, usecols=cols)
+        LapTime = apps.get_model(app_label="app", model_name="LapTime")
+        Driver = apps.get_model(app_label="app", model_name="Driver")
+        Race = apps.get_model(app_label="app", model_name="Race")
+
+        lap_time_objs = []
+        for r_id, d_id, lap, pos, time in csvfile.to_numpy():
+            r = Race.objects.get(pk=r_id)
+            d = Driver.objects.get(pk=d_id)
+
+            t = timedelta(milliseconds=int(time))
+
+            lap_time = LapTime(race=r,
+                               driver=d,
+                               lap_number=lap,
+                               position=pos,
+                               time=t)
+            lap_time_objs.append(lap_time)
+        LapTime.objects.bulk_create(lap_time_objs)
+
+
 class Migration(migrations.Migration):
 
     dependencies = [
@@ -220,6 +252,11 @@ class Migration(migrations.Migration):
         ),
         migrations.RunPython(
             code=insert_qualifying,
+            reverse_code=migrations.RunPython.noop,
+            atomic=True,
+        ),
+        migrations.RunPython(
+            code=insert_lap_times,
             reverse_code=migrations.RunPython.noop,
             atomic=True,
         ),
