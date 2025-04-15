@@ -264,7 +264,7 @@ class Migration(migrations.Migration):
         ),
         migrations.CreateModel(
             name="LapTime",
-            options={"ordering": ["race"]},
+            options={"ordering": ["-race"]},
             fields=[
                 (
                     "id",

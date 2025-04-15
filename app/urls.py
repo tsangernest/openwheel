@@ -6,6 +6,7 @@ from rest_framework.routers import DefaultRouter
 from app.views import (CircuitViewSet,
                        ConstructorViewSet,
                        DriverViewSet,
+                       LapTimeViewSet,
                        NationalityViewSet,
                        RaceViewSet,
                        QualifyingViewSet)
@@ -18,6 +19,7 @@ router.register(prefix=r"constructor", viewset=ConstructorViewSet)
 router.register(prefix=r"circuit", viewset=CircuitViewSet)
 router.register(prefix=r"race", viewset=RaceViewSet)
 router.register(prefix=r"qualifying", viewset=QualifyingViewSet)
+router.register(prefix=r"laptime", viewset=LapTimeViewSet)
 
 
 urlpatterns = [

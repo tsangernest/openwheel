@@ -4,6 +4,7 @@ from rest_framework import serializers
 from app.models import (Circuit,
                         Constructor,
                         Driver,
+                        LapTime,
                         Nationality,
                         Race,
                         Qualifying)
@@ -102,5 +103,21 @@ class QualifyingSerializer(serializers.ModelSerializer):
             "q_two": q_two_pretty,
             "q_three": q_three_pretty,
             "position": instance.position,
+        }
+
+
+class LapTimeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LapTime
+        fields = "__all__"
+
+    def to_representation(self, instance):
+        return {
+            "id": instance.id,
+            "race": instance.race.name,
+            "driver": instance.driver.surname,
+            "lap_number": instance.lap_number,
+            "position": instance.position,
+            "time": f"{math.floor(instance.time.seconds / 60)}:{instance.time.seconds % 60}.{instance.time.microseconds}",
         }
 
