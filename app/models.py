@@ -107,3 +107,13 @@ class LapTime(models.Model):
     
     def __str__(self):
         return f"{self.race.name}, {self.driver.surname}, {self.lap_number}, {self.position}"
+
+
+class PitStop(models.Model):
+    race = models.ForeignKey(to="Race", on_delete=models.DO_NOTHING, related_name="pit_stops")
+    driver = models.ForeignKey(to="Driver", on_delete=models.DO_NOTHING)
+    stop_number = models.PositiveIntegerField()
+    lap_number = models.PositiveIntegerField()
+    local_time = models.DateTimeField()
+    duration = models.DurationField(blank=True, null=True)
+

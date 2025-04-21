@@ -2,6 +2,7 @@
 
 from datetime import datetime, timedelta
 import pandas
+import time
 import csv
 
 from django.db import migrations
@@ -187,6 +188,8 @@ def insert_qualifying(apps, schema_editor):
 
 
 def insert_lap_times(apps, schema_editor):
+    f_start_time = time.time()
+
     with open(file=f"{CSV_DATA_PATH}f1/lap_times.csv",
               mode="r",
               encoding="utf-8") as f:
@@ -203,11 +206,11 @@ def insert_lap_times(apps, schema_editor):
         Race = apps.get_model(app_label="app", model_name="Race")
 
         lap_time_objs = []
-        for r_id, d_id, lap, pos, time in csvfile.to_numpy():
+        for r_id, d_id, lap, pos, dur in csvfile.to_numpy():
             r = Race.objects.get(pk=r_id)
             d = Driver.objects.get(pk=d_id)
 
-            t = timedelta(milliseconds=int(time))
+            t = timedelta(milliseconds=int(dur))
 
             lap_time = LapTime(race=r,
                                driver=d,
@@ -216,6 +219,46 @@ def insert_lap_times(apps, schema_editor):
                                time=t)
             lap_time_objs.append(lap_time)
         LapTime.objects.bulk_create(lap_time_objs)
+
+    print(f"\n\n::Inserting LapTimes took={time.time() - f_start_time}::\n")
+
+
+def insert_pit_stops(apps, schema_editor):
+    f_start_time = time.time()
+
+    with open(file=f"{CSV_DATA_PATH}f1/pit_stops.csv",
+              mode="r",
+              encoding="utf-8") as f:
+        cols = [
+            "raceId",
+            "driverId",
+            "stop",
+            "lap",
+            "time",
+            "milliseconds",
+        ]
+        csvfile = pandas.read_csv(f, header=0, usecols=cols)
+        PitStop = apps.get_model(app_label="app", model_name="PitStop")
+        Driver = apps.get_model(app_label="app", model_name="Driver")
+        Race = apps.get_model(app_label="app", model_name="Race")
+
+        pit_stop_objs = []
+        for r_id, d_id, stop_num, lap_num, local_t, dur in csvfile.to_numpy():
+            r = Race.objects.get(pk=r_id)
+            d = Driver.objects.get(pk=d_id)
+            local_time = datetime.strptime(local_t, "%H:%M:%S")
+            dur = timedelta(milliseconds=int(dur))
+
+            pit_stop = PitStop(race=r,
+                               driver=d,
+                               stop_number=stop_num,
+                               lap_number=lap_num,
+                               local_time=local_time,
+                               duration=dur)
+            pit_stop_objs.append(pit_stop)
+        PitStop.objects.bulk_create(pit_stop_objs)
+
+    print(f"\n\n::Inserting PitStop took={time.time() - f_start_time}::\n")
 
 
 class Migration(migrations.Migration):
@@ -257,6 +300,11 @@ class Migration(migrations.Migration):
         ),
         migrations.RunPython(
             code=insert_lap_times,
+            reverse_code=migrations.RunPython.noop,
+            atomic=True,
+        ),
+        migrations.RunPython(
+            code=insert_pit_stops,
             reverse_code=migrations.RunPython.noop,
             atomic=True,
         ),
