@@ -6,6 +6,7 @@ from app.models import (Circuit,
                         Driver,
                         LapTime,
                         Nationality,
+                        PitStop,
                         Race,
                         Qualifying)
 
@@ -119,5 +120,24 @@ class LapTimeSerializer(serializers.ModelSerializer):
             "lap_number": instance.lap_number,
             "position": instance.position,
             "time": f"{math.floor(instance.time.seconds / 60)}:{instance.time.seconds % 60}.{instance.time.microseconds}",
+        }
+
+
+class PitStopSerializer(serializers.ModelSerializer):
+    local_time = serializers.TimeField(format="%H:%M:%S")
+
+    class Meta:
+        model = PitStop
+        fields = "__all__"
+
+    def to_representation(self, instance):
+        return {
+            "id": instance.id,
+            "race": instance.race.name,
+            "driver": instance.driver.surname,
+            "stop_number": instance.stop_number,
+            "lap_number": instance.lap_number,
+            "local_time": instance.local_time,
+            "time": instance.duration,
         }
 

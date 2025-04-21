@@ -114,6 +114,6 @@ class PitStop(models.Model):
     driver = models.ForeignKey(to="Driver", on_delete=models.DO_NOTHING)
     stop_number = models.PositiveIntegerField()
     lap_number = models.PositiveIntegerField()
-    local_time = models.DateTimeField()
+    local_time = models.TimeField()
     duration = models.DurationField(blank=True, null=True)
 

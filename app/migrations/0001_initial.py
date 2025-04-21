@@ -326,7 +326,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "local_time",
-                    models.DateTimeField(),
+                    models.TimeField(),
                 ),
                 (
                     "duration",

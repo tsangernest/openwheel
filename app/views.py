@@ -9,6 +9,7 @@ from app.models import (Circuit,
                         Driver,
                         LapTime,
                         Nationality,
+                        PitStop,
                         Race,
                         Qualifying)
 from app.serializers import (CircuitSerializer,
@@ -16,6 +17,7 @@ from app.serializers import (CircuitSerializer,
                              DriverSerializer,
                              LapTimeSerializer,
                              NationalitySerializer,
+                             PitStopSerializer,
                              RaceSerializer,
                              QualifyingSerializer)
 
@@ -69,5 +71,11 @@ class QualifyingViewSet(viewsets.ModelViewSet):
 class LapTimeViewSet(viewsets.ModelViewSet):
     queryset = LapTime.objects.all()
     serializer_class = LapTimeSerializer
+    pagination_class = OpenWheelBasePaginator
+
+
+class PitStopViewSet(viewsets.ModelViewSet):
+    queryset = PitStop.objects.all()
+    serializer_class = PitStopSerializer
     pagination_class = OpenWheelBasePaginator
 
