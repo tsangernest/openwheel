@@ -5,3 +5,4 @@ __pycache__/
 vuejs/node_modules/
 tasks.py
 db.sqlite3
+.pytest_cache

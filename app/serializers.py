@@ -1,9 +1,12 @@
+import math
 from rest_framework import serializers
 
 from app.models import (Circuit,
                         Constructor,
                         Driver,
+                        LapTime,
                         Nationality,
+                        PitStop,
                         Race,
                         Qualifying)
 
@@ -72,17 +75,69 @@ class RaceSerializer(serializers.ModelSerializer):
 
 
 class QualifyingSerializer(serializers.ModelSerializer):
-    race = serializers.PrimaryKeyRelatedField(queryset=Qualifying.objects.all(),
-                                              source="race.name",
-                                              required=True)
-    driver = serializers.PrimaryKeyRelatedField(queryset=Driver.objects.all(),
-                                                source="driver.surname",
-                                                required=True)
-    constructor = serializers.PrimaryKeyRelatedField(queryset=Constructor.objects.all(),
-                                                     source="constructor.name",
-                                                     required=True)
-
     class Meta:
         model = Qualifying
         fields = "__all__"
+
+    def to_representation(self, instance):
+        q_one_pretty = q_two_pretty = q_three_pretty = None
+
+        if instance.q_one:
+            q_one_pretty = (f"{math.floor(instance.q_one.seconds / 60)}"
+                            f":{instance.q_one.seconds % 60}"
+                            f".{instance.q_one.microseconds}")
+        if instance.q_two:
+            q_two_pretty = (f"{math.floor(instance.q_two.seconds / 60)}"
+                            f":{instance.q_two.seconds % 60}"
+                            f".{instance.q_two.microseconds}")
+        if instance.q_three:
+            q_three_pretty = (f"{math.floor(instance.q_three.seconds / 60)}"
+                              f":{instance.q_three.seconds % 60}"
+                              f".{instance.q_three.microseconds}")
+
+        return {
+            "id": instance.id,
+            "race": instance.race.name,
+            "driver": instance.driver.surname,
+            "constructor": instance.constructor.name,
+            "q_one": q_one_pretty,
+            "q_two": q_two_pretty,
+            "q_three": q_three_pretty,
+            "position": instance.position,
+        }
+
+
+class LapTimeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LapTime
+        fields = "__all__"
+
+    def to_representation(self, instance):
+        return {
+            "id": instance.id,
+            "race": instance.race.name,
+            "driver": instance.driver.surname,
+            "lap_number": instance.lap_number,
+            "position": instance.position,
+            "time": f"{math.floor(instance.time.seconds / 60)}:{instance.time.seconds % 60}.{instance.time.microseconds}",
+        }
+
+
+class PitStopSerializer(serializers.ModelSerializer):
+    local_time = serializers.TimeField(format="%H:%M:%S")
+
+    class Meta:
+        model = PitStop
+        fields = "__all__"
+
+    def to_representation(self, instance):
+        return {
+            "id": instance.id,
+            "race": instance.race.name,
+            "driver": instance.driver.surname,
+            "stop_number": instance.stop_number,
+            "lap_number": instance.lap_number,
+            "local_time": instance.local_time,
+            "time": instance.duration,
+        }
 

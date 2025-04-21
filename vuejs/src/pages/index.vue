@@ -54,7 +54,19 @@
           :loading="driverTableLoading"
           @update:options="getDrivers"
           density="compact"
-        />
+          hover
+        >
+          <template v-slot:item="{ item }">
+            
+          </template>
+        </v-data-table-server>
+
+        <v-dialog
+          v-model="showAddEditDialog"
+          max-width="600"
+        >
+
+        </v-dialog>
 
         <section class="section">
           <router-view/>
@@ -83,14 +95,14 @@ export default {
       // * BEGIN Driver table *
       driverTableLoading: false,
       driverHeaders: [
-        { title: 'ID', key: 'id', align: 'start' },
-        { title: 'DriverRef', key: 'ref', alight: 'start', sortable: false },
-        { title: 'Driver No.', key: 'number', sortable: false },
-        { title: 'Code', key: 'code', sortable: false },
-        { title: 'First Name', key: 'forename', sortable: true },
-        { title: 'Last Name', key: 'surname', sortable: true },
-        { title: 'Date of Birth', key: 'date_of_birth', sortable: true },
-        { title: 'Nationality', key: 'nationality', sortable: true },
+        //{ title: 'ID', key: 'id', align: 'start' },
+        //{ title: 'DriverRef', key: 'ref', alight: 'start', sortable: false },
+        //{ title: 'Driver No.', key: 'number', sortable: false },
+        { title: 'Code', key: 'code', sortable: false, width: 100 },
+        { title: 'First Name', key: 'forename', sortable: true, nowrap: true, width: 1 },
+        { title: 'Last Name', key: 'surname', sortable: true, nowrap: true },
+        //{ title: 'Date of Birth', key: 'date_of_birth', sortable: true },
+        //{ title: 'Nationality', key: 'nationality', sortable: true },
         // { title: 'Wiki URL', key: 'url', sortable: false },
       ],
       itemsPerPageOptions: [5, 10, 25, 100],
@@ -99,6 +111,7 @@ export default {
 
       // Toggles
       showMobileMenu: false,
+      showAddEditDialog: false,
     }
   },
 

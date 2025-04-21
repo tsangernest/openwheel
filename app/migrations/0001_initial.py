@@ -262,5 +262,92 @@ class Migration(migrations.Migration):
                 ),
             ],
         ),
+        migrations.CreateModel(
+            name="LapTime",
+            options={"ordering": ["-race"]},
+            fields=[
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "lap_number",
+                    models.PositiveIntegerField(),
+                ),
+                (
+                    "position",
+                     models.PositiveIntegerField(),
+                ),
+                (
+                    "time",
+                    models.DurationField(blank=True, null=True),
+                ),
+                (
+                    "driver",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        to="app.driver",
+                    ),
+                ),
+                (
+                    "race",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="lap_times",
+                        to="app.race",
+                    ),
+                ),
+            ],
+        ),
+        migrations.CreateModel(
+            name="PitStop",
+            fields=[
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "stop_number",
+                    models.PositiveIntegerField(),
+                ),
+                (
+                    "lap_number",
+                    models.PositiveIntegerField(),
+                ),
+                (
+                    "local_time",
+                    models.TimeField(),
+                ),
+                (
+                    "duration",
+                    models.DurationField(blank=True, null=True),
+                ),
+                (
+                    "driver",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        to="app.driver",
+                    ),
+                ),
+                (
+                    "race",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                        related_name="pit_stops",
+                        to="app.race",
+                    ),
+                ),
+            ],
+        ),
     ]
 

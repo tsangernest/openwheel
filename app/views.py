@@ -7,13 +7,17 @@ from app.pagination import OpenWheelBasePaginator
 from app.models import (Circuit,
                         Constructor,
                         Driver,
+                        LapTime,
                         Nationality,
+                        PitStop,
                         Race,
                         Qualifying)
 from app.serializers import (CircuitSerializer,
                              ConstructorSerializer,
                              DriverSerializer,
+                             LapTimeSerializer,
                              NationalitySerializer,
+                             PitStopSerializer,
                              RaceSerializer,
                              QualifyingSerializer)
 
@@ -34,11 +38,11 @@ class DriverViewSet(viewsets.ModelViewSet):
     ]
 
     ordering_fields = [
-        "id",
+        # "id",
         "surname",
         "forename",
-        "date_of_birth",
-        "nationality",
+        # "date_of_birth",
+        # "nationality",
     ]
 
 
@@ -61,5 +65,17 @@ class RaceViewSet(viewsets.ModelViewSet):
 class QualifyingViewSet(viewsets.ModelViewSet):
     queryset = Qualifying.objects.all()
     serializer_class = QualifyingSerializer
+    pagination_class = OpenWheelBasePaginator
+
+
+class LapTimeViewSet(viewsets.ModelViewSet):
+    queryset = LapTime.objects.all()
+    serializer_class = LapTimeSerializer
+    pagination_class = OpenWheelBasePaginator
+
+
+class PitStopViewSet(viewsets.ModelViewSet):
+    queryset = PitStop.objects.all()
+    serializer_class = PitStopSerializer
     pagination_class = OpenWheelBasePaginator
 
