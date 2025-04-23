@@ -1,7 +1,9 @@
 from django_filters.rest_framework import DjangoFilterBackend
 
-from rest_framework import viewsets
+from rest_framework import generics, mixins, viewsets
 from rest_framework.filters import OrderingFilter
+from rest_framework.response import Response
+from rest_framework.status import HTTP_200_OK
 
 from app.pagination import OpenWheelBasePaginator
 from app.models import (Circuit,
@@ -11,7 +13,8 @@ from app.models import (Circuit,
                         Nationality,
                         PitStop,
                         Race,
-                        Qualifying)
+                        Qualifying,
+                        DropStuff,)
 from app.serializers import (CircuitSerializer,
                              ConstructorSerializer,
                              DriverSerializer,
@@ -19,7 +22,8 @@ from app.serializers import (CircuitSerializer,
                              NationalitySerializer,
                              PitStopSerializer,
                              RaceSerializer,
-                             QualifyingSerializer)
+                             QualifyingSerializer,
+                             DropStuffSerializer,)
 
 
 class NationalityViewSet(viewsets.ModelViewSet):
@@ -78,4 +82,17 @@ class PitStopViewSet(viewsets.ModelViewSet):
     queryset = PitStop.objects.all()
     serializer_class = PitStopSerializer
     pagination_class = OpenWheelBasePaginator
+
+
+class UploadView(generics.CreateAPIView):
+    queryset = DropStuff.objects.all()
+    serializer_class = DropStuffSerializer
+
+    def create(self, request, *args, **kwargs):
+        file_uploaded = request.FILES.get("file")
+        content_type = file_uploaded.content_type
+        print(f"\n{content_type=}\n")
+
+
+        return Response(status=HTTP_200_OK)
 

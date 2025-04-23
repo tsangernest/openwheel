@@ -10,7 +10,8 @@ from app.views import (CircuitViewSet,
                        NationalityViewSet,
                        PitStopViewSet,
                        RaceViewSet,
-                       QualifyingViewSet)
+                       QualifyingViewSet,
+                       UploadView)
 
 
 router = DefaultRouter()
@@ -29,8 +30,9 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/v1", include("djoser.urls")),
     path("api/v1", include("djoser.urls.authtoken")),
+    path(route="upload", view=UploadView.as_view()),
 
     # URLS
-    path("", include(router.urls))
+    path("", include(router.urls)),
 ]
 

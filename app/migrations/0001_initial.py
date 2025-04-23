@@ -306,6 +306,7 @@ class Migration(migrations.Migration):
         ),
         migrations.CreateModel(
             name="PitStop",
+            options={"ordering": ["id"]},
             fields=[
                 (
                     "id",
@@ -346,6 +347,29 @@ class Migration(migrations.Migration):
                         related_name="pit_stops",
                         to="app.race",
                     ),
+                ),
+            ],
+        ),
+        migrations.CreateModel(
+            name="DropStuff",
+            options={"ordering": ["id"]},
+            fields=[
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "file",
+                    models.BinaryField(blank=True, editable=True),
+                ),
+                (
+                    "file_name",
+                    models.CharField(max_length=255),
                 ),
             ],
         ),

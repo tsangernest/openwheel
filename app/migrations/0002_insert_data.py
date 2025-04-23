@@ -224,8 +224,6 @@ def insert_lap_times(apps, schema_editor):
 
 
 def insert_pit_stops(apps, schema_editor):
-    f_start_time = time.time()
-
     with open(file=f"{CSV_DATA_PATH}f1/pit_stops.csv",
               mode="r",
               encoding="utf-8") as f:
@@ -257,8 +255,6 @@ def insert_pit_stops(apps, schema_editor):
                                duration=dur)
             pit_stop_objs.append(pit_stop)
         PitStop.objects.bulk_create(pit_stop_objs)
-
-    print(f"\n\n::Inserting PitStop took={time.time() - f_start_time}::\n")
 
 
 class Migration(migrations.Migration):

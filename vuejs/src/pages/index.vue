@@ -56,9 +56,7 @@
           density="compact"
           hover
         >
-          <template v-slot:item="{ item }">
-            
-          </template>
+
         </v-data-table-server>
 
         <v-dialog
@@ -71,6 +69,14 @@
         <section class="section">
           <router-view/>
         </section>
+
+        <v-spacer/>
+        <v-card>
+          <vue-dropzone
+            :options="dropzoneOptions"
+          />
+
+        </v-card>
 
         <footer class="footer">
           <p class="has-text-centered">Copyright (c) 2025</p>
@@ -86,9 +92,14 @@
 
 <script>
 import axios from 'axios'
+import vueDropzone from 'dropzone-vue3'
 
 export default {
   name: 'Index',
+
+  components: {
+    vueDropzone,
+  },
 
   data() {
     return {
@@ -108,6 +119,15 @@ export default {
       itemsPerPageOptions: [5, 10, 25, 100],
       drfParams: {},
       // * END Drivers Table *
+
+      // * BEGIN Dropzone *
+      dropzoneOptions: {
+        url: 'http://localhost:8000/upload',
+        thumbnailWidth: 30,
+        maxFilesize: 3,
+        //headers: { 'Content-Type': 'application/json' },
+      },
+      // * END dropzone *
 
       // Toggles
       showMobileMenu: false,

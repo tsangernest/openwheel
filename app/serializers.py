@@ -8,7 +8,8 @@ from app.models import (Circuit,
                         Nationality,
                         PitStop,
                         Race,
-                        Qualifying)
+                        Qualifying,
+                        DropStuff,)
 
 
 class NationalitySerializer(serializers.ModelSerializer):
@@ -140,4 +141,10 @@ class PitStopSerializer(serializers.ModelSerializer):
             "local_time": instance.local_time,
             "time": instance.duration,
         }
+
+
+class DropStuffSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DropStuff
+        fields = "__all__"
 

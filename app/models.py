@@ -117,3 +117,20 @@ class PitStop(models.Model):
     local_time = models.TimeField()
     duration = models.DurationField(blank=True, null=True)
 
+    class Meta:
+        ordering = ["id"]
+
+    def __str__(self):
+        return f"{self.race.name}, {self.driver.surname}, stop_number={self.stop_number}, lap_number={self.lap_number}"
+
+
+class DropStuff(models.Model):
+    file = models.BinaryField(blank=True, editable=True)
+    file_name = models.CharField(max_length=255)
+
+    class Meta:
+        ordering = ["id"]
+
+    def __str__(self):
+        return f"{self.file_name}"
+
