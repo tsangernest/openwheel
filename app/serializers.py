@@ -1,4 +1,5 @@
 import math
+
 from rest_framework import serializers
 
 from app.models import (Circuit,
@@ -59,9 +60,6 @@ class CircuitSerializer(serializers.ModelSerializer):
             "coordinates",
             "url",
         ]
-
-    def get_coordinates(self, obj) -> str:
-        return f"{obj.coordinates}"
 
 
 class RaceSerializer(serializers.ModelSerializer):
