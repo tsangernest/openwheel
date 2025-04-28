@@ -55,9 +55,9 @@ def insert_driver(apps, schema_editor):
         driver_objs = []
 
         next(csvfile)   # skipping column names
-        for id, ref, num, code, first, last, dob, nation, url in csvfile:
+        for d_id, ref, num, code, first, last, dob, nation, url in csvfile:
             n = Nationality.objects.filter(demonym=nation).first()
-            d = Driver(id=id,
+            d = Driver(id=d_id,
                        ref=ref,
                        number=num,
                        code=code,
@@ -81,9 +81,9 @@ def insert_constructor(apps, schema_editor):
         constructor_objs = []
 
         next(csvfile)   # skipping column names
-        for id, ref, name, nation, url in csvfile:
+        for c_id, ref, name, nation, url in csvfile:
             n = Nationality.objects.filter(demonym=nation).first()
-            c = Constructor(id=id,
+            c = Constructor(id=c_id,
                             ref=ref,
                             name=name,
                             nationality=n,
@@ -103,9 +103,9 @@ def insert_circuit(apps, schema_editor):
         circuit_objs = []
 
         next(csvfile)   # skipping column names
-        for id, ref, name, loc, country, y, x, alt, url in csvfile:
+        for c_id, ref, name, loc, country, y, x, alt, url in csvfile:
             country = Nationality.objects.filter(country=country).first()
-            circuit = Circuit(id=id,
+            circuit = Circuit(id=c_id,
                               ref=ref,
                               name=name,
                               location=loc,
@@ -137,10 +137,10 @@ def insert_race(apps, schema_editor):
         Circuit = apps.get_model(app_label="app", model_name="Circuit")
 
         race_objs = []
-        for id, r_num, circ_id, n, d, t, url in csvfile.to_numpy():
+        for r_id, r_num, circ_id, n, d, t, url in csvfile.to_numpy():
             c = Circuit.objects.get(pk=circ_id)
             date = _join_dt_helper(date=d, t=t)
-            race = Race(id=id,
+            race = Race(id=r_id,
                         round_number=r_num,
                         circuit=c,
                         name=n,
@@ -193,6 +193,7 @@ def insert_lap_times(apps, schema_editor):
     with open(file=f"{CSV_DATA_PATH}f1/lap_times.csv",
               mode="r",
               encoding="utf-8") as f:
+
         cols = [
             "raceId",
             "driverId",
@@ -224,11 +225,10 @@ def insert_lap_times(apps, schema_editor):
 
 
 def insert_pit_stops(apps, schema_editor):
-    f_start_time = time.time()
-
     with open(file=f"{CSV_DATA_PATH}f1/pit_stops.csv",
               mode="r",
               encoding="utf-8") as f:
+
         cols = [
             "raceId",
             "driverId",
@@ -258,7 +258,35 @@ def insert_pit_stops(apps, schema_editor):
             pit_stop_objs.append(pit_stop)
         PitStop.objects.bulk_create(pit_stop_objs)
 
-    print(f"\n\n::Inserting PitStop took={time.time() - f_start_time}::\n")
+
+def insert_driver_standings(apps, schema_editor):
+    with open(file=f"{CSV_DATA_PATH}f1/driver_standings.csv",
+              mode="r",
+              encoding="utf-8") as f:
+
+        cols = [
+            "driverStandingsId",
+            "raceId",
+            "driverId",
+            "points",
+            "wins",
+        ]
+        csvfile = pandas.read_csv(f, header=0, usecols=cols)
+        DriverStanding = apps.get_model(app_label="app", model_name="DriverStanding")
+        Race = apps.get_model(app_label="app", model_name="Race")
+        Driver = apps.get_model(app_label="app", model_name="Driver")
+
+        driver_standing_objs = []
+        for ds_id, r_id, d_id, points, w in csvfile.to_numpy():
+            r = Race.objects.get(pk=r_id)
+            d = Driver.objects.get(pk=d_id)
+
+            driver_standing = DriverStanding(race=r,
+                                             driver=d,
+                                             points=points,
+                                             number_of_wins=w)
+            driver_standing_objs.append(driver_standing)
+        DriverStanding.objects.bulk_create(driver_standing_objs)
 
 
 class Migration(migrations.Migration):
@@ -305,6 +333,11 @@ class Migration(migrations.Migration):
         ),
         migrations.RunPython(
             code=insert_pit_stops,
+            reverse_code=migrations.RunPython.noop,
+            atomic=True,
+        ),
+        migrations.RunPython(
+            code=insert_driver_standings,
             reverse_code=migrations.RunPython.noop,
             atomic=True,
         ),

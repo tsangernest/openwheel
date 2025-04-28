@@ -1,4 +1,5 @@
 import math
+
 from rest_framework import serializers
 
 from app.models import (Circuit,
@@ -8,7 +9,9 @@ from app.models import (Circuit,
                         Nationality,
                         PitStop,
                         Race,
-                        Qualifying)
+                        Qualifying,
+                        DriverStanding,
+                        DropStuff,)
 
 
 class NationalitySerializer(serializers.ModelSerializer):
@@ -58,9 +61,6 @@ class CircuitSerializer(serializers.ModelSerializer):
             "coordinates",
             "url",
         ]
-
-    def get_coordinates(self, obj) -> str:
-        return f"{obj.coordinates}"
 
 
 class RaceSerializer(serializers.ModelSerializer):
@@ -140,4 +140,25 @@ class PitStopSerializer(serializers.ModelSerializer):
             "local_time": instance.local_time,
             "time": instance.duration,
         }
+
+
+class DriverStandingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DriverStanding
+        fields = "__all__"
+
+    def to_representation(self, instance):
+        return {
+            "id": instance.id,
+            "race": instance.race.name,
+            "driver": instance.driver.surname,
+            "points": instance.points,
+            "number_of_wins": instance.number_of_wins,
+        }
+
+
+class DropStuffSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DropStuff
+        fields = "__all__"
 

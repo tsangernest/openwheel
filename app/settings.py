@@ -38,6 +38,16 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:8080",
 ]
 
+CORS_ALLOW_HEADERS = [
+    "content-type",
+    "dnt",
+    "origin",
+    "cache-control",
+    "x-requested-with",
+    "accept-encoding",
+    "user-agent",
+]
+
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -108,7 +118,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = "en-ca"
 
 TIME_ZONE = "UTC"
 

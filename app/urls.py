@@ -10,7 +10,9 @@ from app.views import (CircuitViewSet,
                        NationalityViewSet,
                        PitStopViewSet,
                        RaceViewSet,
-                       QualifyingViewSet)
+                       QualifyingViewSet,
+                       DriverStandingViewSet,
+                       UploadView)
 
 
 router = DefaultRouter()
@@ -22,6 +24,7 @@ router.register(prefix=r"race", viewset=RaceViewSet)
 router.register(prefix=r"qualifying", viewset=QualifyingViewSet)
 router.register(prefix=r"laptime", viewset=LapTimeViewSet)
 router.register(prefix=r"pitstop", viewset=PitStopViewSet)
+router.register(prefix=r"driverstanding", viewset=DriverStandingViewSet)
 
 
 urlpatterns = [
@@ -29,8 +32,9 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/v1", include("djoser.urls")),
     path("api/v1", include("djoser.urls.authtoken")),
+    path(route="upload", view=UploadView.as_view()),
 
     # URLS
-    path("", include(router.urls))
+    path("", include(router.urls)),
 ]
 
