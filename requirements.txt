@@ -90,8 +90,10 @@ pyrepl==0.9.0
     # via fancycompleter
 pytest==8.3.5
     # via
-    #   -r requirements.in
+    #   pytest-django
     #   pytest-repeat
+pytest-django==4.11.1
+    # via -r requirements.in
 pytest-repeat==0.9.3
     # via -r requirements.in
 python-dateutil==2.9.0.post0
