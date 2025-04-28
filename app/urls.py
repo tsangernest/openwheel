@@ -11,6 +11,7 @@ from app.views import (CircuitViewSet,
                        PitStopViewSet,
                        RaceViewSet,
                        QualifyingViewSet,
+                       DriverStandingViewSet,
                        UploadView)
 
 
@@ -23,6 +24,7 @@ router.register(prefix=r"race", viewset=RaceViewSet)
 router.register(prefix=r"qualifying", viewset=QualifyingViewSet)
 router.register(prefix=r"laptime", viewset=LapTimeViewSet)
 router.register(prefix=r"pitstop", viewset=PitStopViewSet)
+router.register(prefix=r"driverstanding", viewset=DriverStandingViewSet)
 
 
 urlpatterns = [

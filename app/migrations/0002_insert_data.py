@@ -259,6 +259,36 @@ def insert_pit_stops(apps, schema_editor):
         PitStop.objects.bulk_create(pit_stop_objs)
 
 
+def insert_driver_standings(apps, schema_editor):
+    with open(file=f"{CSV_DATA_PATH}f1/driver_standings.csv",
+              mode="r",
+              encoding="utf-8") as f:
+
+        cols = [
+            "driverStandingsId",
+            "raceId",
+            "driverId",
+            "points",
+            "wins",
+        ]
+        csvfile = pandas.read_csv(f, header=0, usecols=cols)
+        DriverStanding = apps.get_model(app_label="app", model_name="DriverStanding")
+        Race = apps.get_model(app_label="app", model_name="Race")
+        Driver = apps.get_model(app_label="app", model_name="Driver")
+
+        driver_standing_objs = []
+        for ds_id, r_id, d_id, points, w in csvfile.to_numpy():
+            r = Race.objects.get(pk=r_id)
+            d = Driver.objects.get(pk=d_id)
+
+            driver_standing = DriverStanding(race=r,
+                                             driver=d,
+                                             points=points,
+                                             number_of_wins=w)
+            driver_standing_objs.append(driver_standing)
+        DriverStanding.objects.bulk_create(driver_standing_objs)
+
+
 class Migration(migrations.Migration):
 
     dependencies = [
@@ -303,6 +333,11 @@ class Migration(migrations.Migration):
         ),
         migrations.RunPython(
             code=insert_pit_stops,
+            reverse_code=migrations.RunPython.noop,
+            atomic=True,
+        ),
+        migrations.RunPython(
+            code=insert_driver_standings,
             reverse_code=migrations.RunPython.noop,
             atomic=True,
         ),

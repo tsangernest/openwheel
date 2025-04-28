@@ -351,6 +351,43 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.CreateModel(
+            name="DriverStanding",
+            options={"ordering": ["id"]},
+            fields=[
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "race",
+                    models.ForeignKey(
+                        to="app.race",
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                    ),
+                ),
+                (
+                    "driver",
+                    models.ForeignKey(
+                        to="app.driver",
+                        on_delete=django.db.models.deletion.DO_NOTHING,
+                    ),
+                ),
+                (
+                    "points",
+                    models.PositiveIntegerField(),
+                ),
+                (
+                    "number_of_wins",
+                    models.PositiveIntegerField(),
+                ),
+            ],
+        ),
+        migrations.CreateModel(
             name="DropStuff",
             options={"ordering": ["id"]},
             fields=[

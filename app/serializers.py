@@ -10,6 +10,7 @@ from app.models import (Circuit,
                         PitStop,
                         Race,
                         Qualifying,
+                        DriverStanding,
                         DropStuff,)
 
 
@@ -138,6 +139,21 @@ class PitStopSerializer(serializers.ModelSerializer):
             "lap_number": instance.lap_number,
             "local_time": instance.local_time,
             "time": instance.duration,
+        }
+
+
+class DriverStandingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DriverStanding
+        fields = "__all__"
+
+    def to_representation(self, instance):
+        return {
+            "id": instance.id,
+            "race": instance.race.name,
+            "driver": instance.driver.surname,
+            "points": instance.points,
+            "number_of_wins": instance.number_of_wins,
         }
 
 

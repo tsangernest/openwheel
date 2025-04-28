@@ -124,6 +124,16 @@ class PitStop(models.Model):
         return f"{self.race.name}, {self.driver.surname}, stop_number={self.stop_number}, lap_number={self.lap_number}"
 
 
+class DriverStanding(models.Model):
+    race = models.ForeignKey(to="Race", on_delete=models.DO_NOTHING)
+    driver = models.ForeignKey(to="Driver", on_delete=models.DO_NOTHING)
+    points = models.PositiveIntegerField()
+    number_of_wins = models.PositiveIntegerField()
+
+    class Meta:
+        ordering = ["id"]
+
+
 class DropStuff(models.Model):
     file = models.BinaryField(blank=True, editable=True)
     file_name = models.CharField(max_length=255)

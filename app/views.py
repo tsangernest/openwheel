@@ -14,6 +14,7 @@ from app.models import (Circuit,
                         PitStop,
                         Race,
                         Qualifying,
+                        DriverStanding,
                         DropStuff,)
 from app.serializers import (CircuitSerializer,
                              ConstructorSerializer,
@@ -23,6 +24,7 @@ from app.serializers import (CircuitSerializer,
                              PitStopSerializer,
                              RaceSerializer,
                              QualifyingSerializer,
+                             DriverStandingSerializer,
                              DropStuffSerializer,)
 
 
@@ -81,6 +83,12 @@ class LapTimeViewSet(viewsets.ModelViewSet):
 class PitStopViewSet(viewsets.ModelViewSet):
     queryset = PitStop.objects.all()
     serializer_class = PitStopSerializer
+    pagination_class = OpenWheelBasePaginator
+
+
+class DriverStandingViewSet(viewsets.ModelViewSet):
+    queryset = DriverStanding.objects.all()
+    serializer_class = DriverStandingSerializer
     pagination_class = OpenWheelBasePaginator
 
 
