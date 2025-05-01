@@ -21,5 +21,5 @@ class DriverFactory(DjangoModelFactory):
     def include_name_in_url(self, create, extracted, **kwargs):
         if not create and not extracted:
             return
-        self.url = f"{self.url}/{self.surname.lower()}_{self.forename.lower()}"
+        self.url = f"{self.url}/{self.surname.lower()}_{self.forename.lower()}/"
 
