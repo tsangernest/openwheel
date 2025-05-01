@@ -8,11 +8,9 @@ asgiref==3.8.1
     # via
     #   django
     #   django-cors-headers
-attrs==25.3.0
-    # via wmctrl
 black==25.1.0
     # via -r requirements.in
-certifi==2025.1.31
+certifi==2025.4.26
     # via requests
 cffi==1.17.1
     # via cryptography
@@ -26,7 +24,7 @@ defusedxml==0.7.1
     # via
     #   python3-openid
     #   social-auth-core
-django==4.2.20
+django==5.2
     # via
     #   django-cors-headers
     #   django-filter
@@ -38,7 +36,7 @@ django-cors-headers==4.7.0
     # via -r requirements.in
 django-filter==25.1
     # via -r requirements.in
-djangorestframework==3.15.2
+djangorestframework==3.16.0
     # via
     #   -r requirements.in
     #   djangorestframework-simplejwt
@@ -50,7 +48,7 @@ factory-boy==3.3.3
     # via -r requirements.in
 faker==37.1.0
     # via factory-boy
-fancycompleter==0.9.1
+fancycompleter==0.11.0
     # via pdbpp
 idna==3.10
     # via requests
@@ -60,15 +58,15 @@ invoke==2.2.0
     # via -r requirements.in
 isort==6.0.1
     # via -r requirements.in
-mypy-extensions==1.0.0
+mypy-extensions==1.1.0
     # via black
-numpy==2.2.4
+numpy==2.2.5
     # via pandas
 oauthlib==3.2.2
     # via
     #   requests-oauthlib
     #   social-auth-core
-packaging==24.2
+packaging==25.0
     # via
     #   black
     #   pytest
@@ -76,9 +74,9 @@ pandas==2.2.3
     # via -r requirements.in
 pathspec==0.12.1
     # via black
-pdbpp==0.10.3
+pdbpp==0.11.6
     # via -r requirements.in
-pillow==11.1.0
+pillow==11.2.1
     # via -r requirements.in
 platformdirs==4.3.7
     # via black
@@ -92,15 +90,13 @@ pyjwt==2.9.0
     # via
     #   djangorestframework-simplejwt
     #   social-auth-core
-pyrepl==0.9.0
-    # via fancycompleter
 pytest==8.3.5
     # via
     #   pytest-django
     #   pytest-repeat
 pytest-django==4.11.1
     # via -r requirements.in
-pytest-repeat==0.9.3
+pytest-repeat==0.9.4
     # via -r requirements.in
 python-dateutil==2.9.0.post0
     # via pandas
@@ -119,19 +115,17 @@ six==1.17.0
     # via python-dateutil
 social-auth-app-django==5.4.3
     # via djoser
-social-auth-core==4.5.6
+social-auth-core==4.6.1
     # via social-auth-app-django
 sqlparse==0.5.3
     # via django
-stripe==11.6.0
+stripe==12.1.0
     # via -r requirements.in
-typing-extensions==4.12.2
+typing-extensions==4.13.2
     # via stripe
 tzdata==2025.2
     # via
     #   faker
     #   pandas
-urllib3==2.3.0
+urllib3==2.4.0
     # via requests
-wmctrl==0.5
-    # via pdbpp
