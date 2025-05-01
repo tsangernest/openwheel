@@ -1,31 +1,18 @@
 from django_filters.rest_framework import DjangoFilterBackend
-
-from rest_framework import generics, mixins, viewsets
+from rest_framework import generics, viewsets
 from rest_framework.filters import OrderingFilter
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK
 
+from app.models import (Circuit, Constructor, Driver, DriverStanding,
+                        DropStuff, LapTime, Nationality, PitStop, Qualifying,
+                        Race)
 from app.pagination import OpenWheelBasePaginator
-from app.models import (Circuit,
-                        Constructor,
-                        Driver,
-                        LapTime,
-                        Nationality,
-                        PitStop,
-                        Race,
-                        Qualifying,
-                        DriverStanding,
-                        DropStuff,)
-from app.serializers import (CircuitSerializer,
-                             ConstructorSerializer,
-                             DriverSerializer,
-                             LapTimeSerializer,
-                             NationalitySerializer,
-                             PitStopSerializer,
-                             RaceSerializer,
-                             QualifyingSerializer,
-                             DriverStandingSerializer,
-                             DropStuffSerializer,)
+from app.serializers import (CircuitSerializer, ConstructorSerializer,
+                             DriverSerializer, DriverStandingSerializer,
+                             DropStuffSerializer, LapTimeSerializer,
+                             NationalitySerializer, PitStopSerializer,
+                             QualifyingSerializer, RaceSerializer)
 
 
 class NationalityViewSet(viewsets.ModelViewSet):

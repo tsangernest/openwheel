@@ -1,19 +1,11 @@
 from django.contrib import admin
-from django.urls import path, include
-
+from django.urls import include, path
 from rest_framework.routers import DefaultRouter
 
-from app.views import (CircuitViewSet,
-                       ConstructorViewSet,
-                       DriverViewSet,
-                       LapTimeViewSet,
-                       NationalityViewSet,
-                       PitStopViewSet,
-                       RaceViewSet,
-                       QualifyingViewSet,
-                       DriverStandingViewSet,
-                       UploadView)
-
+from app.views import (CircuitViewSet, ConstructorViewSet,
+                       DriverStandingViewSet, DriverViewSet, LapTimeViewSet,
+                       NationalityViewSet, PitStopViewSet, QualifyingViewSet,
+                       RaceViewSet, UploadView)
 
 router = DefaultRouter()
 router.register(prefix=r"nationality", viewset=NationalityViewSet)

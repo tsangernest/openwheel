@@ -2,16 +2,9 @@ import math
 
 from rest_framework import serializers
 
-from app.models import (Circuit,
-                        Constructor,
-                        Driver,
-                        LapTime,
-                        Nationality,
-                        PitStop,
-                        Race,
-                        Qualifying,
-                        DriverStanding,
-                        DropStuff,)
+from app.models import (Circuit, Constructor, Driver, DriverStanding,
+                        DropStuff, LapTime, Nationality, PitStop, Qualifying,
+                        Race)
 
 
 class NationalitySerializer(serializers.ModelSerializer):
