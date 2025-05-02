@@ -10,14 +10,13 @@ TECHNOLOGY Summary (full info in requirements.txt):
 * postgresql 
 
 
-TOP priority:
+Priority 1:
 ---
 * mbp
 
 
-Next (top down priority):
+Priority 2:
 ---
-* What to do with qualifying?
 * detailed view
 * finish full CRUD operations in UI
 * get app in container to reload on command
@@ -25,12 +24,10 @@ Next (top down priority):
 * authentication + authorization
 
 
-Next After Next (no priority, in no order):
+Priority 3 (no priority, in no order):
 ---
-Scraping
-* probably nice to get betamax setup so i'm not hammering wikipedia eps
-* learn to use wikipedia endpoints, to then use spiders to update driver/circuit/update
-* scrape images too?
+* photo for each driver
+  
 
 
 Brainstorm Area:
