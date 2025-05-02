@@ -1,5 +1,5 @@
-from pathlib import Path
 import os
+from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -93,6 +93,15 @@ DATABASES = {
         "HOST": f"{os.getenv(key='DATABASE_HOST', default='127.0.0.1')}",
         "PORT": f"{os.getenv(key='DATABASE_PORT', default='5432')}",
     },
+    "TEST": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": ":memory:",
+    },
+}
+
+
+REST_FRAMEWORK = {
+    "TEST_REQUEST_DEFAULT_FORMAT": "json",
 }
 
 

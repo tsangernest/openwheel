@@ -11,9 +11,11 @@ stripe
 pandas
 
 # below dev stuff
+factory-boy
 pytest-django
 pytest-repeat
 
+isort
 black
 pdbpp
 invoke
