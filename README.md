@@ -1,7 +1,6 @@
 MISSION: 
 1. Found F1 data,
-2. Use as sandbox to tryout different tech with a lot of data i'm interested in?
-3. So i can focus better at the place where i conduct bizness :')
+2. Use as sandbox to tryout different tech
 
 
 TECHNOLOGY Summary (full info in requirements.txt):
@@ -11,10 +10,9 @@ TECHNOLOGY Summary (full info in requirements.txt):
 * postgresql 
 
 
-
-TOP TOP priority:
+TOP priority:
 ---
-* acquire macbook pro, and _obviously_ with _at least_ 64gb of ram,
+* mbp
 
 
 Next (top down priority):
@@ -44,9 +42,6 @@ Brainstorm Area:
 
 Known Issues
 ----------------------------
-General:
-* should probably rename constructor table to something else, i figured anyone looking at this will know F1
-
 Qualifying Table:
 * python time does not support microseconds. datetime does,
 * I'm not sure if there's an elegant way to do this since creating a datetime object seems to not like all 0's for year/month/day. seems odd to me that postgres supports 'allballs' for zero datetime. need to do more research on this
