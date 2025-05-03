@@ -2,9 +2,9 @@ import math
 
 from rest_framework import serializers
 
-from app.models import (Circuit, Constructor, Driver, DriverStanding,
-                        DropStuff, LapTime, Nationality, PitStop, Qualifying,
-                        Race)
+from app.models import (Circuit, Constructor, ConstructorStanding, Driver,
+                        DriverStanding, DropStuff, LapTime, Nationality,
+                        PitStop, Qualifying, Race)
 
 
 class NationalitySerializer(serializers.ModelSerializer):
@@ -145,6 +145,21 @@ class DriverStandingSerializer(serializers.ModelSerializer):
             "id": instance.id,
             "race": instance.race.name,
             "driver": instance.driver.surname,
+            "points": instance.points,
+            "number_of_wins": instance.number_of_wins,
+        }
+
+
+class ConstructorStandingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ConstructorStanding
+        fields = "__all__"
+
+    def to_representation(self, instance):
+        return {
+            "id": instance.id,
+            "race": instance.race.name,
+            "constructor": instance.constructor.name,
             "points": instance.points,
             "number_of_wins": instance.number_of_wins,
         }
