@@ -18,7 +18,7 @@ class DriverFactory(DjangoModelFactory):
         model = Driver
 
     @post_generation
-    def include_name_in_url(self, create, extracted, **kwargs):
+    def set_name_in_url(self, create, extracted, **kwargs):
         if not create and not extracted:
             return
         self.url = f"{self.url}/{self.surname.lower()}_{self.forename.lower()}/"
@@ -33,7 +33,7 @@ class ConstructorFactory(DjangoModelFactory):
         model = Constructor
 
     @post_generation
-    def set_constructor_manufacture_name(self, create, extracted, **kwargs):
+    def set_constructor_manufacture_name_in_url(self, create, extracted, **kwargs):
         if not create and not extracted:
             return
         self.url = f"https://{self.name.lower()}.com/"
