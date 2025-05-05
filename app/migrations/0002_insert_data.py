@@ -288,6 +288,31 @@ def insert_driver_standings(apps, schema_editor):
         DriverStanding.objects.bulk_create(driver_standing_objs)
 
 
+def insert_constructor_standing(apps, schema_editor):
+    with open(f"{CSV_DATA_PATH}/f1/constructor_standings.csv", "r") as f:
+        cols = [
+            "raceId",
+            "constructorId",
+            "points",
+            "wins",
+        ]
+        csv_file = pandas.read_csv(f, header=0, usecols=cols)
+        ConsStanding = apps.get_model("app", "ConstructorStanding")
+        Race = apps.get_model("app", "Race")
+        Cons = apps.get_model("app", "Constructor")
+
+        cons_standing_objs = []
+        for r_id, cons_id, pts, w in csv_file.to_numpy():
+            r = Race.objects.get(id=r_id)
+            cons = Cons.objects.get(id=cons_id)
+            cons_standing = ConsStanding(race=r,
+                                         constructor=cons,
+                                         points=pts,
+                                         number_of_wins=w)
+            cons_standing_objs.append(cons_standing)
+        ConsStanding.objects.bulk_create(cons_standing_objs)
+
+
 class Migration(migrations.Migration):
 
     dependencies = [
@@ -340,5 +365,6 @@ class Migration(migrations.Migration):
             reverse_code=migrations.RunPython.noop,
             atomic=True,
         ),
+        migrations.RunPython(insert_constructor_standing, migrations.RunPython.noop, True)
     ]
 

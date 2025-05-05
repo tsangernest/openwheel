@@ -28,7 +28,7 @@ class Driver(models.Model):
         ordering = ["id"]
 
     def __str__(self):
-        return f"{self.surname}, {self.forename}"
+        return f"[{self.surname}, {self.forename}]"
 
 
 class Constructor(models.Model):
@@ -76,7 +76,7 @@ class Race(models.Model):
         ordering = ["-date_of_race"]
 
     def __str__(self):
-        return f"{self.name}, {self.date_of_race}"
+        return f"{self.date_of_race.year} - {self.name}"
 
 
 class Qualifying(models.Model):
@@ -92,7 +92,7 @@ class Qualifying(models.Model):
         ordering = ["id"]
 
     def __str__(self):
-        return f"{self.race.name}, {self.driver.surname}, Starting Grid #{self.position}"
+        return f"{self.race}, {self.driver}, start_grid_position={self.position}"
 
 
 class LapTime(models.Model):
@@ -106,7 +106,7 @@ class LapTime(models.Model):
         ordering = ["-race"]
     
     def __str__(self):
-        return f"{self.race.name}, {self.driver.surname}, {self.lap_number}, {self.position}"
+        return f"{self.race}, {self.driver}, lap_number={self.lap_number}, position={self.position}"
 
 
 class PitStop(models.Model):
@@ -121,12 +121,22 @@ class PitStop(models.Model):
         ordering = ["id"]
 
     def __str__(self):
-        return f"{self.race.name}, {self.driver.surname}, stop_number={self.stop_number}, lap_number={self.lap_number}"
+        return f"{self.race}, {self.driver}, stop_number={self.stop_number}, lap_number={self.lap_number}"
 
 
 class DriverStanding(models.Model):
     race = models.ForeignKey(to="Race", on_delete=models.DO_NOTHING)
     driver = models.ForeignKey(to="Driver", on_delete=models.DO_NOTHING)
+    points = models.PositiveIntegerField()
+    number_of_wins = models.PositiveIntegerField()
+
+    class Meta:
+        ordering = ["id"]
+
+
+class ConstructorStanding(models.Model):
+    race = models.ForeignKey("Race", models.DO_NOTHING)
+    constructor = models.ForeignKey("Constructor", models.DO_NOTHING)
     points = models.PositiveIntegerField()
     number_of_wins = models.PositiveIntegerField()
 

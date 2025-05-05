@@ -2,10 +2,11 @@ from django.contrib import admin
 from django.urls import include, path
 from rest_framework.routers import DefaultRouter
 
-from app.views import (CircuitViewSet, ConstructorViewSet,
-                       DriverStandingViewSet, DriverViewSet, LapTimeViewSet,
-                       NationalityViewSet, PitStopViewSet, QualifyingViewSet,
-                       RaceViewSet, UploadView)
+from app.views import (CircuitViewSet, ConstructorStandingViewSet,
+                       ConstructorViewSet, DriverStandingViewSet,
+                       DriverViewSet, LapTimeViewSet, NationalityViewSet,
+                       PitStopViewSet, QualifyingViewSet, RaceViewSet,
+                       UploadView)
 
 router = DefaultRouter()
 router.register(prefix=r"nationality", viewset=NationalityViewSet)
@@ -17,6 +18,7 @@ router.register(prefix=r"qualifying", viewset=QualifyingViewSet)
 router.register(prefix=r"laptime", viewset=LapTimeViewSet)
 router.register(prefix=r"pitstop", viewset=PitStopViewSet)
 router.register(prefix=r"driverstanding", viewset=DriverStandingViewSet)
+router.register(r"constructorstanding", ConstructorStandingViewSet)
 
 
 urlpatterns = [

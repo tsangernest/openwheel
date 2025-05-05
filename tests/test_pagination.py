@@ -2,7 +2,7 @@ from itertools import pairwise
 from pprint import pprint
 
 import pytest
-from rest_framework.status import HTTP_200_OK
+from rest_framework.status import HTTP_200_OK, HTTP_404_NOT_FOUND
 
 from tests.factories import DriverFactory
 
@@ -94,4 +94,12 @@ def test_pagination_page_size_parameter(drf_c):
     json_response = response.json()
     assert 2 == len(json_response["results"])
     assert not json_response["next"]
+
+
+@pytest.mark.django_db
+def test_invalid_parameters(drf_c):
+    DriverFactory.create_batch(8)
+
+    response = drf_c.get("/driver/?page=11")
+    assert HTTP_404_NOT_FOUND == response.status_code
 

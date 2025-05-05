@@ -1,7 +1,7 @@
 from factory import LazyAttribute, faker, post_generation
 from factory.django import DjangoModelFactory
 
-from app.models import Driver, Nationality
+from app.models import Constructor, Driver, Nationality
 
 
 class DriverFactory(DjangoModelFactory):
@@ -18,8 +18,23 @@ class DriverFactory(DjangoModelFactory):
         model = Driver
 
     @post_generation
-    def include_name_in_url(self, create, extracted, **kwargs):
+    def set_name_in_url(self, create, extracted, **kwargs):
         if not create and not extracted:
             return
         self.url = f"{self.url}/{self.surname.lower()}_{self.forename.lower()}/"
+
+
+class ConstructorFactory(DjangoModelFactory):
+    ref = LazyAttribute(lambda r: f"{r.name.lower()}")
+    name = faker.Faker("last_name_nonbinary")
+    nationality = faker.Faker("random_element", elements=Nationality.objects.all())
+
+    class Meta:
+        model = Constructor
+
+    @post_generation
+    def set_constructor_manufacture_name_in_url(self, create, extracted, **kwargs):
+        if not create and not extracted:
+            return
+        self.url = f"https://{self.name.lower()}.com/"
 

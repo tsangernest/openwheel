@@ -4,15 +4,16 @@ from rest_framework.filters import OrderingFilter
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK
 
-from app.models import (Circuit, Constructor, Driver, DriverStanding,
-                        DropStuff, LapTime, Nationality, PitStop, Qualifying,
-                        Race)
+from app.models import (Circuit, Constructor, ConstructorStanding, Driver,
+                        DriverStanding, DropStuff, LapTime, Nationality,
+                        PitStop, Qualifying, Race)
 from app.pagination import OpenWheelBasePaginator
 from app.serializers import (CircuitSerializer, ConstructorSerializer,
-                             DriverSerializer, DriverStandingSerializer,
-                             DropStuffSerializer, LapTimeSerializer,
-                             NationalitySerializer, PitStopSerializer,
-                             QualifyingSerializer, RaceSerializer)
+                             ConstructorStandingSerializer, DriverSerializer,
+                             DriverStandingSerializer, DropStuffSerializer,
+                             LapTimeSerializer, NationalitySerializer,
+                             PitStopSerializer, QualifyingSerializer,
+                             RaceSerializer)
 
 
 class NationalityViewSet(viewsets.ModelViewSet):
@@ -77,6 +78,11 @@ class DriverStandingViewSet(viewsets.ModelViewSet):
     queryset = DriverStanding.objects.all()
     serializer_class = DriverStandingSerializer
     pagination_class = OpenWheelBasePaginator
+
+
+class ConstructorStandingViewSet(viewsets.ModelViewSet):
+    queryset = ConstructorStanding.objects.all()
+    serializer_class = ConstructorStandingSerializer
 
 
 class UploadView(generics.CreateAPIView):
