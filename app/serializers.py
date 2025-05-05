@@ -14,26 +14,36 @@ class NationalitySerializer(serializers.ModelSerializer):
 
 
 class DriverSerializer(serializers.ModelSerializer):
-    surname = serializers.CharField(required=True)
-    date_of_birth = serializers.DateField(format="%d-%b-%Y")
-    nationality = serializers.PrimaryKeyRelatedField(queryset=Nationality.objects.all(),
-                                                     source="nationality.demonym",
-                                                     required=False)
-
     class Meta:
         model = Driver
         fields = "__all__"
 
+    def to_representation(self, instance):
+        return {
+            "id": instance.id,
+            "ref": instance.ref,
+            "number": instance.number,
+            "code": instance.code,
+            "forename": instance.forename,
+            "surname": instance.surname,
+            "date_of_birth": instance.date_of_birth.strftime(format="%d-%b-%Y"),
+            "nationality": instance.nationality.country,
+            "url": instance.url,
+        }
 
 class ConstructorSerializer(serializers.ModelSerializer):
-    name = serializers.CharField(required=True)
-    nationality = serializers.PrimaryKeyRelatedField(queryset=Nationality.objects.all(),
-                                                     source="nationality.demonym",
-                                                     required=False)
-
     class Meta:
         model = Constructor
         fields = "__all__"
+
+    def to_representation(self, instance):
+        return {
+            "id": instance.id,
+            "ref": instance.ref,
+            "name": instance.name,
+            "nationality": instance.nationality.country,
+            "url": instance.url,
+        }
 
 
 class CircuitSerializer(serializers.ModelSerializer):
@@ -54,14 +64,19 @@ class CircuitSerializer(serializers.ModelSerializer):
 
 
 class RaceSerializer(serializers.ModelSerializer):
-    date_of_race = serializers.DateTimeField(format="%d-%b-%Y")
-    circuit = serializers.PrimaryKeyRelatedField(queryset=Circuit.objects.all(),
-                                                 source="circuit.name",
-                                                 required=True)
-
     class Meta:
         model = Race
         fields = "__all__"
+
+    def to_representation(self, instance):
+        return {
+            "id": instance.id,
+            "name": instance.name,
+            "circuit": instance.circuit.name,
+            "date_of_race": instance.date_of_race.strftime(format="%d-%b-%Y"),
+            "round_number": instance.round_number,
+            "url": instance.url,
+        }
 
 
 class QualifyingSerializer(serializers.ModelSerializer):
@@ -114,8 +129,6 @@ class LapTimeSerializer(serializers.ModelSerializer):
 
 
 class PitStopSerializer(serializers.ModelSerializer):
-    local_time = serializers.TimeField(format="%H:%M:%S")
-
     class Meta:
         model = PitStop
         fields = "__all__"
@@ -127,7 +140,7 @@ class PitStopSerializer(serializers.ModelSerializer):
             "driver": instance.driver.surname,
             "stop_number": instance.stop_number,
             "lap_number": instance.lap_number,
-            "local_time": instance.local_time,
+            "local_time": instance.local_time.strftime(format="%H:%M:%S"),
             "time": instance.duration,
         }
 
