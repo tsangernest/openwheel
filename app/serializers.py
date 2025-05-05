@@ -37,23 +37,20 @@ class ConstructorSerializer(serializers.ModelSerializer):
 
 
 class CircuitSerializer(serializers.ModelSerializer):
-    name = serializers.CharField(required=True)
-    coordinates = serializers.StringRelatedField()
-    country = serializers.PrimaryKeyRelatedField(queryset=Nationality.objects.all(),
-                                                 source="country.country",
-                                                 required=False)
-
     class Meta:
         model = Circuit
-        fields = [
-            "id",
-            "name",
-            "country",
-            "location",
-            "altitude",
-            "coordinates",
-            "url",
-        ]
+        fields = "__all__"
+
+    def to_representation(self, instance):
+        return {
+            "id": instance.id,
+            "name": instance.name,
+            "country": instance.country.country,
+            "location": instance.location,
+            "altitude": instance.altitude,
+            "coordinates": instance.coordinates,
+            "url": instance.url,
+        }
 
 
 class RaceSerializer(serializers.ModelSerializer):
