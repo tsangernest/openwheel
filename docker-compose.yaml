@@ -13,6 +13,24 @@ services:
     env_file:
       - .env
     restart: always
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.2.2
+    container_name: keycloak
+    command: start-dev --verbose
+    environment:
+      KC_LOG_LEVEL: info
+      KC_METRICS_ENABLED: true
+      KC_HEALTH_ENABLED: true
+
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+    ports:
+      - "8080:8080"
+    depends_on:
+      - web
+    restart: always
+
   web:
     build:
       context: .
@@ -37,6 +55,7 @@ services:
     depends_on:
       - db
     restart: always
+
 volumes:
   postgres_data:
 
