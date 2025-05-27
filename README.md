@@ -17,9 +17,7 @@ Priority 1:
 
 Priority 2:
 ---
-* detailed view
 * finish full CRUD operations in UI
-* get app in container to reload on command
 * search bar with filters
 * authentication + authorization
 
