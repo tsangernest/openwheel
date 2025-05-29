@@ -56,6 +56,19 @@
           show-expand
           hover
         >
+          <template v-slot:top>
+            <v-toolbar flat>
+              <template v-slot:append>
+                <v-btn
+                  text='Add a driver'
+                  prepend-icon='mdi-plus'
+                  border
+                  rounded='xl'
+                />
+              </template>
+            </v-toolbar>
+          </template>
+
           <template v-slot:item.data-table-expand="{ internalItem, isExpanded, toggleExpand }">
             <v-btn
               class="text-none"
@@ -100,8 +113,7 @@
         <v-dialog
           v-model="showAddEditDialog"
           max-width="600"
-        >
-        </v-dialog>
+        />
 
         <section class="section">
           <router-view/>
