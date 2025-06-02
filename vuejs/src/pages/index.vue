@@ -64,6 +64,7 @@
                   prepend-icon='mdi-plus'
                   border
                   rounded='xl'
+                  @click="addDriver"
                 />
               </template>
             </v-toolbar>
@@ -112,8 +113,90 @@
 
         <v-dialog
           v-model="showAddEditDialog"
-          max-width="600"
-        />
+          max-width="500"
+          persistent
+        >
+          <v-card>
+            <template v-slot:text>
+              <v-row>
+                <v-col>
+                  <v-text-field
+                    label="First name"
+                    density="compact"
+                  />
+                </v-col>
+                <v-col>
+                  <v-text-field
+                    label="Last name"
+                    density="compact"
+                  />
+                </v-col>
+              </v-row>
+
+              <v-row>
+                <v-col>
+                  <v-text-field
+                    label="Reference"
+                    density="compact"
+                  />
+                </v-col>
+                <v-col>
+                  <v-text-field
+                    label="Code"
+                    density="compact"
+                  />
+                </v-col>
+                <v-col>
+                  <v-text-field
+                    label="Number"
+                    density="compact"
+                  />
+                </v-col>
+              </v-row>
+
+              <v-row>
+                <v-col>
+                  <v-text-field
+                    label="Birthday"
+                    density="compact"
+                  />
+                </v-col>
+                <v-col>
+                  <v-text-field
+                    label="Country"
+                    density="compact"
+                  />
+                </v-col>
+              </v-row>
+
+              <v-row>
+                <v-col>
+                  <v-text-field
+                    label="Wiki URL"
+                    density="compact"
+                  />
+                </v-col>
+              </v-row>
+            </template>
+
+            <v-spacer/>
+            <v-divider/>
+
+            <v-card-actions class="bg-surface-light">
+              <v-btn
+                text="Save"
+                border
+              />
+              <v-spacer/>
+              <v-btn
+                text="Cancel"
+                border
+                @click="showAddEditDialog = false"
+              />
+            </v-card-actions>
+
+          </v-card>
+        </v-dialog>
 
         <section class="section">
           <router-view/>
@@ -199,6 +282,10 @@ export default {
       this.totalItems = data['count']
       this.drivers = data['results']
     },
+
+    addDriver() {
+      this.showAddEditDialog = true
+    }
   },
 }
 </script>
