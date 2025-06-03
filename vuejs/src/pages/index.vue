@@ -64,7 +64,7 @@
                   prepend-icon='mdi-plus'
                   border
                   rounded='xl'
-                  @click="addDriver"
+                  @click="showAddEditDialog = true"
                 />
               </template>
             </v-toolbar>
@@ -111,92 +111,9 @@
           </template>
         </v-data-table-server>
 
-        <v-dialog
+        <add-edit-driver-dialog
           v-model="showAddEditDialog"
-          max-width="500"
-          persistent
-        >
-          <v-card>
-            <template v-slot:text>
-              <v-row>
-                <v-col>
-                  <v-text-field
-                    label="First name"
-                    density="compact"
-                  />
-                </v-col>
-                <v-col>
-                  <v-text-field
-                    label="Last name"
-                    density="compact"
-                  />
-                </v-col>
-              </v-row>
-
-              <v-row>
-                <v-col>
-                  <v-text-field
-                    label="Reference"
-                    density="compact"
-                  />
-                </v-col>
-                <v-col>
-                  <v-text-field
-                    label="Code"
-                    density="compact"
-                  />
-                </v-col>
-                <v-col>
-                  <v-text-field
-                    label="Number"
-                    density="compact"
-                  />
-                </v-col>
-              </v-row>
-
-              <v-row>
-                <v-col>
-                  <v-text-field
-                    label="Birthday"
-                    density="compact"
-                  />
-                </v-col>
-                <v-col>
-                  <v-text-field
-                    label="Country"
-                    density="compact"
-                  />
-                </v-col>
-              </v-row>
-
-              <v-row>
-                <v-col>
-                  <v-text-field
-                    label="Wiki URL"
-                    density="compact"
-                  />
-                </v-col>
-              </v-row>
-            </template>
-
-            <v-spacer/>
-            <v-divider/>
-
-            <v-card-actions class="bg-surface-light">
-              <v-btn
-                text="Save"
-                border
-              />
-              <v-spacer/>
-              <v-btn
-                text="Cancel"
-                border
-                @click="showAddEditDialog = false"
-              />
-            </v-card-actions>
-
-          </v-card>
-        </v-dialog>
+        />
 
         <section class="section">
           <router-view/>
@@ -225,11 +142,13 @@
 <script>
 import axios from 'axios'
 import vueDropzone from 'dropzone-vue3'
+import AddEditDriverDialog from '../components/AddEditDriverDialog'
 
 export default {
   name: 'Index',
 
   components: {
+    AddEditDriverDialog,
     vueDropzone,
   },
 
@@ -282,10 +201,6 @@ export default {
       this.totalItems = data['count']
       this.drivers = data['results']
     },
-
-    addDriver() {
-      this.showAddEditDialog = true
-    }
   },
 }
 </script>
