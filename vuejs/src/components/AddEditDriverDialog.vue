@@ -121,12 +121,6 @@ export default {
     }
   },
 
-  watch: {
-    modelValue() {
-      if(this.modelValue === true) { this.getNationality() }
-    }
-  },
-
   methods: {
     closeAddEditDriverDialog() {
       this.$refs.addEditDriverForm.reset()
