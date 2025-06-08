@@ -59,10 +59,10 @@
             <v-toolbar flat>
               <template v-slot:append>
                 <v-btn
-                  text='Add a driver'
-                  prepend-icon='mdi-plus'
                   border
-                  rounded='xl'
+                  text="Add a driver"
+                  prepend-icon="mdi-plus"
+                  rounded="xl"
                   @click="showAddEditDialog = true"
                 />
               </template>
