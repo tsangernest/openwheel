@@ -53,7 +53,6 @@
 
           :loading="driverTableLoading"
           @update:options="getDrivers"
-          show-expand
           hover
         >
           <template v-slot:top>
@@ -70,45 +69,24 @@
             </v-toolbar>
           </template>
 
-          <template v-slot:item.data-table-expand="{ internalItem, isExpanded, toggleExpand }">
-            <v-btn
-              class="text-none"
-              variant="text"
-              :append-icon="isExpanded(internalItem) ? 'mdi-chevron-up': 'mdi-chevron-down'"
-              @click="toggleExpand(internalItem)"
-            />
+          <template v-slot:item.actions="{ item }">
+            <div class="justify-end">
+              <v-btn
+                border
+                size="small"
+                icon="mdi-pencil"
+                @click="editDriver(item)"
+              />
+
+              <v-btn
+                border
+                size="small"
+                icon="mdi-delete"
+                @click="removeDriver(item)"
+              />
+            </div>
           </template>
 
-          <template v-slot:expanded-row="{ columns, item }">
-            <tr>
-              <td :colspan="columns.length">
-                <v-sheet
-                  rounded="lg"
-                  border
-                >
-                  <v-table density="compact">
-                    <tbody class="bg-surface-light">
-                      <tr>
-                        <th>Race Number</th>
-                        <th>Date of Birth</th>
-                        <th>Nationality</th>
-                        <th>Wiki URL</th>
-                      </tr>
-                    </tbody>
-
-                    <tbody>
-                      <tr>
-                        <td>{{ item.number }}</td>
-                        <td>{{ item.date_of_birth }}</td>
-                        <td>{{ item.nationality }}</td>
-                        <td>{{ item.url }}</td>
-                      </tr>
-                    </tbody>
-                  </v-table>
-                </v-sheet>
-              </td>
-            </tr>
-          </template>
         </v-data-table-server>
 
         <add-edit-driver-dialog
@@ -157,9 +135,10 @@ export default {
       // * BEGIN Driver table *
       driverTableLoading: false,
       driverHeaders: [
-        { title: 'Code', key: 'code', sortable: false, width: 100 },
+        { title: 'Code', key: 'code', sortable: false, align: 'start', width: 100 },
         { title: 'First Name', key: 'forename', sortable: true, nowrap: true, width: 1 },
         { title: 'Last Name', key: 'surname', sortable: true, nowrap: true },
+        { title: 'Actions', key: 'actions', sortable: false, align: 'end', nowrap: true },
       ],
       itemsPerPageOptions: [5, 10, 25, 100],
       drfParams: {},
@@ -180,6 +159,21 @@ export default {
   },
 
   methods: {
+    editDriver(item) {
+      console.log('-editDriver-\n', JSON.stringify(item))
+
+
+    },
+
+    removeDriver(item) {
+      // This doesn't actually remove anything right now
+      console.log('-removeDriver-\n', JSON.stringify(item))
+    },
+
+    customToggleExpand(item) {
+      console.log(JSON.stringify(item))
+    },
+
     getDrivers({ page, itemsPerPage, sortBy }) {
       this.driverTableLoading = true
 
