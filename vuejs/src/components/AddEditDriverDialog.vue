@@ -111,7 +111,12 @@ export default {
     modelValue: {
       type: Boolean,
       required: true,
-    }
+    },
+    driverId: {
+      default: null,
+      type: Number,
+      required: false,
+    },
   },
 
   data() {
@@ -119,6 +124,21 @@ export default {
       driverObj: {},
       nationalityItems: [],
     }
+  },
+
+  watch: {
+    'driverId' () {
+      if(this.driverId !== null) {
+        axios
+          .get(`/driver/${this.driverId}`)
+          .then(response => { this.driverObj = response.data })
+          .catch(e => console.log(e))
+      }
+    },
+  },
+
+  mounted() {
+    this.getNationality()
   },
 
   methods: {

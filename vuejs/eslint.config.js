@@ -18,6 +18,8 @@ export default [
   {
     rules: {
       'vue/multi-word-component-names': 'off',
+      'vue/v-slot-style': 'off',
+      'vue/valid-v-slot': ['error', { allowModifiers: true }],
     },
   }
 ]

@@ -18,15 +18,15 @@
               data-target="navbar-menu"
               @click="showMobileMenu = !showMobileMenu"
             >
-              <span aria-hidden="true"></span>
-              <span aria-hidden="true"></span>
-              <span aria-hidden="true"></span>
+              <span aria-hidden="true"/>
+              <span aria-hidden="true"/>
+              <span aria-hidden="true"/>
             </a>
           </div>
 
           <div
-            class="navbar-menu"
             id="navbar-menu"
+            class="navbar-menu"
           >
             <div class="navbar-end">
               <div class="navbar-item">
@@ -52,8 +52,8 @@
           :items-per-page-options="itemsPerPageOptions"
 
           :loading="driverTableLoading"
-          @update:options="getDrivers"
           hover
+          @update:options="getDrivers"
         >
           <template v-slot:top>
             <v-toolbar flat>
@@ -70,27 +70,26 @@
           </template>
 
           <template v-slot:item.actions="{ item }">
-            <div class="justify-end">
-              <v-btn
-                border
-                size="small"
-                icon="mdi-pencil"
-                @click="editDriver(item)"
-              />
+            <v-btn
+              border
+              size="small"
+              icon="mdi-pencil"
+              @click="editDriver(item)"
+            />
 
-              <v-btn
-                border
-                size="small"
-                icon="mdi-delete"
-                @click="removeDriver(item)"
-              />
-            </div>
+            <v-btn
+              border
+              size="small"
+              icon="mdi-delete"
+              @click="removeDriver(item)"
+            />
           </template>
 
         </v-data-table-server>
 
         <add-edit-driver-dialog
           v-model="showAddEditDialog"
+          :driver-id="driverId"
         />
 
         <section class="section">
@@ -132,6 +131,7 @@ export default {
 
   data() {
     return {
+      driverId: 0,
       // * BEGIN Driver table *
       driverTableLoading: false,
       driverHeaders: [
@@ -161,8 +161,8 @@ export default {
   methods: {
     editDriver(item) {
       console.log('-editDriver-\n', JSON.stringify(item))
-
-
+      this.driverId = item.id
+      this.showAddEditDialog = true
     },
 
     removeDriver(item) {
