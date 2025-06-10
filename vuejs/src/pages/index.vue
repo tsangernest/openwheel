@@ -69,22 +69,62 @@
             </v-toolbar>
           </template>
 
-          <template v-slot:item.actions="{ item }">
-            <v-btn
-              border
-              size="small"
-              icon="mdi-pencil"
-              @click="editDriver(item)"
-            />
-
-            <v-btn
-              border
-              size="small"
-              icon="mdi-delete"
-              @click="removeDriver(item)"
-            />
+          <template v-slot:item="{ item, internalItem, toggleExpand }">
+            <tr
+              class="text-no-wrap"
+              style="cursor: pointer"
+              @click="toggleExpand(internalItem)"
+            >
+              <td>{{ item.code }}</td>
+              <td>{{ item.forename }}</td>
+              <td>{{ item.surname }}</td>
+              <td class="text-end">
+                <v-btn
+                  border
+                  size="small"
+                  icon="mdi-pencil"
+                  @click.stop="editDriver(item)"
+                />
+                <v-btn
+                  border
+                  size="small"
+                  icon="mdi-delete"
+                  @click.stop="removeDriver(item)"
+                />
+              </td>
+            </tr>
           </template>
 
+          <template v-slot:expanded-row="{ columns, item }">
+            <tr>
+              <td
+                :colspan="columns.length"
+                class="py-2"
+              >
+                <v-sheet rounded>
+                  <v-table density="compact">
+                    <tbody class="bg-surface-light">
+                      <tr>
+                        <th>Race Number</th>
+                        <th>Date of Birth</th>
+                        <th>Nationality</th>
+                        <th>Wiki URL</th>
+                      </tr>
+                    </tbody>
+
+                    <tbody>
+                      <tr>
+                        <td>{{ item.number }}</td>
+                        <td>{{ item.date_of_birth }}</td>
+                        <td>{{ item.nationality }}</td>
+                        <td>{{ item.url }}</td>
+                      </tr>
+                    </tbody>
+                  </v-table>
+                </v-sheet>
+              </td>
+            </tr>
+          </template>
         </v-data-table-server>
 
         <add-edit-driver-dialog
@@ -168,10 +208,6 @@ export default {
     removeDriver(item) {
       // This doesn't actually remove anything right now
       console.log('-removeDriver-\n', JSON.stringify(item))
-    },
-
-    customToggleExpand(item) {
-      console.log(JSON.stringify(item))
     },
 
     getDrivers({ page, itemsPerPage, sortBy }) {
