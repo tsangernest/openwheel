@@ -9,7 +9,7 @@ from tests.factories import DriverFactory
 @pytest.mark.django_db
 def test_driver_get_empty_drivers(drf_c: APIClient):
     assert 0 == Driver.objects.count()
-    response = drf_c.get("/driver/")
+    response = drf_c.get(path="/driver/")
     assert HTTP_200_OK == response.status_code
 
     json_response = response.json()
@@ -19,7 +19,7 @@ def test_driver_get_empty_drivers(drf_c: APIClient):
 @pytest.mark.django_db
 def test_get_all_drivers(drf_c: APIClient):
     DriverFactory.create_batch(size=8)
-    response = drf_c.get("/driver/")
+    response = drf_c.get(path="/driver/")
     assert HTTP_200_OK == response.status_code
 
     json_response = response.json()
