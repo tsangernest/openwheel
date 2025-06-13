@@ -129,7 +129,7 @@
 
         <add-edit-driver-dialog
           v-model="showAddEditDialog"
-          :driver-id="driverId"
+          v-model:driver-id="driverId"
         />
 
         <section class="section">

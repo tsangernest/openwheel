@@ -145,6 +145,7 @@ export default {
     closeAddEditDriverDialog() {
       this.$refs.addEditDriverForm.reset()
       this.$emit('update:modelValue', false)
+      this.$emit('update:driverId')
     },
 
     saveDriver() {
