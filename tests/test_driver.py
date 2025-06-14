@@ -30,19 +30,17 @@ def test_get_all_drivers(drf_c: APIClient):
 
 
 @pytest.mark.django_db
-def test_post_driver_only_required_fields(drf_c: APIClient):
+def test_post_driver_required_fields_only(drf_c: APIClient):
     driver_payload: dict = {
         "surname":  "Targaryen",
         "date_of_birth": "2025-01-01",
         "nationality": 3,
-        "forename": "Daenerys",
     }
     response = drf_c.post(path="/driver/", data=driver_payload, format="json")
     assert response.status_code == HTTP_201_CREATED
 
     json_response = response.json()
     assert json_response["surname"] == driver_payload["surname"]
-    assert json_response["forename"] == driver_payload["forename"]
     assert (
         json_response["nationality"] ==
         Nationality
@@ -59,5 +57,5 @@ def test_post_driver_only_required_fields(drf_c: APIClient):
 
     # Test operational
     assert 1 == Driver.objects.count()
-    assert 1 == Driver.objects.filter(surname="Targaryen", forename="Daenerys",).count()
+    assert 1 == Driver.objects.filter(surname="Targaryen").count()
 
