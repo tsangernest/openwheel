@@ -38,15 +38,23 @@ def test_post_driver_only_required_fields(drf_c: APIClient):
         "forename": "Daenerys",
     }
     response = drf_c.post(path="/driver/", data=driver_payload, format="json")
-    assert HTTP_201_CREATED == response.status_code
+    assert response.status_code == HTTP_201_CREATED
+
     json_response = response.json()
-    assert driver_payload["surname"] == json_response["surname"]
-    assert driver_payload["forename"] == json_response["forename"]
-    assert Nationality.objects.get(id=driver_payload["nationality"]).country == json_response["nationality"]
+    assert json_response["surname"] == driver_payload["surname"]
+    assert json_response["forename"] == driver_payload["forename"]
     assert (
+        json_response["nationality"] ==
+        Nationality
+        .objects
+        .get(id=driver_payload["nationality"])
+        .country
+    )
+    assert (
+        json_response["date_of_birth"] ==
         datetime
         .strptime(driver_payload["date_of_birth"], "%Y-%m-%d")
-        .strftime(format="%d-%b-%Y") == json_response["date_of_birth"]
+        .strftime("%d-%b-%Y")
     )
 
     # Test operational
