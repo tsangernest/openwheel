@@ -221,7 +221,7 @@ export default {
       this.drfParams['page-size'] = itemsPerPage
 
       axios
-        .get('/driver', { params: { ...this.drfParams } } )
+        .get('/driver/', { params: { ...this.drfParams } } )
         .then(response => { this.processPagination(response.data) })
         .catch(e => console.log(e))
         .finally(() => { this.driverTableLoading = false })
