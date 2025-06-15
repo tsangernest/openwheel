@@ -45,14 +45,16 @@ def test_post_driver_required_fields(drf_c: APIClient):
     json_response = response.json()
     assert json_response["surname"] == driver_payload["surname"]
     assert (
-        json_response["nationality"] ==
+        json_response["nationality"]
+        ==
         Nationality
         .objects
         .get(id=driver_payload["nationality"])
         .country
     )
     assert (
-        json_response["date_of_birth"] ==
+        json_response["date_of_birth"]
+        ==
         datetime
         .strptime(driver_payload["date_of_birth"], "%Y-%m-%d")
         .strftime("%d-%b-%Y")
@@ -77,4 +79,14 @@ def test_update_driver_required_fields(drf_c: APIClient):
     assert response.status_code == HTTP_200_OK
 
     json_response = response.json()
-    
+    assert 1 == Driver.objects.count()
+    assert json_response["surname"] == driver_payload["surname"]
+    assert json_response["forename"] == driver_payload["forename"]
+    assert json_response["ref"] == driver_payload["ref"]
+    assert (
+        json_response["date_of_birth"]
+        ==
+        datetime
+        .strptime(driver_payload["date_of_birth"], "%Y-%m-%d")
+        .strftime(format="%d-%b-%Y")
+    )
