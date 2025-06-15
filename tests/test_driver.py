@@ -8,10 +8,13 @@ from app.models import Driver, Nationality
 from tests.factories import DriverFactory
 
 
+TEST_PATH: str = f"/driver/"
+
+
 @pytest.mark.django_db
 def test_driver_get_empty_drivers(drf_c: APIClient):
     assert 0 == Driver.objects.count()
-    response = drf_c.get(path="/driver/")
+    response = drf_c.get(path=TEST_PATH)
     assert HTTP_200_OK == response.status_code
 
     json_response = response.json()
@@ -21,7 +24,7 @@ def test_driver_get_empty_drivers(drf_c: APIClient):
 @pytest.mark.django_db
 def test_get_all_drivers(drf_c: APIClient):
     DriverFactory.create_batch(size=8)
-    response = drf_c.get(path="/driver/")
+    response = drf_c.get(path=TEST_PATH)
     assert HTTP_200_OK == response.status_code
 
     json_response = response.json()
@@ -30,13 +33,13 @@ def test_get_all_drivers(drf_c: APIClient):
 
 
 @pytest.mark.django_db
-def test_post_driver_required_fields_only(drf_c: APIClient):
+def test_post_driver_required_fields(drf_c: APIClient):
     driver_payload: dict = {
         "surname":  "Targaryen",
         "date_of_birth": "2025-01-01",
         "nationality": 3,
     }
-    response = drf_c.post(path="/driver/", data=driver_payload, format="json")
+    response = drf_c.post(path=TEST_PATH, data=driver_payload, format="json")
     assert response.status_code == HTTP_201_CREATED
 
     json_response = response.json()
@@ -59,3 +62,19 @@ def test_post_driver_required_fields_only(drf_c: APIClient):
     assert 1 == Driver.objects.count()
     assert 1 == Driver.objects.filter(surname="Targaryen").count()
 
+
+@pytest.mark.django_db
+def test_update_driver_required_fields(drf_c: APIClient):
+    dummy_driver = DriverFactory()
+
+    driver_payload: dict = {
+        "surname": "Dayne",
+        "forename": "Arthur",
+        "date_of_birth": "0260-02-06",
+        "ref": "dayne",
+    }
+    response = drf_c.put(path=f"{TEST_PATH}{dummy_driver.id}/", data=driver_payload, format="json")
+    assert response.status_code == HTTP_200_OK
+
+    json_response = response.json()
+    
