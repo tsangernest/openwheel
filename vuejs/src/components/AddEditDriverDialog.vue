@@ -113,7 +113,7 @@ export default {
       required: true,
     },
     driverId: {
-      default: null,
+      default: 0,
       type: Number,
       required: false,
     },
@@ -128,9 +128,9 @@ export default {
 
   watch: {
     'driverId' () {
-      if(this.driverId !== null) {
+      if(this.driverId) {
         axios
-          .get(`/driver/${this.driverId}`)
+          .get(`/driver/${this.driverId}/`)
           .then(response => { this.driverObj = response.data })
           .catch(e => console.log(e))
       }
@@ -152,11 +152,21 @@ export default {
     saveDriver() {
       console.log('In save driver')
       console.log(JSON.stringify(this.driverObj))
+      let httpMethod = {
+        method: this.driverId ? 'put': 'post',
+        url: this.driverId ? `/driver/${this.driverId}/`: '/driver/',
+        data: this.driverId ? this.driverObj: null,
+      }
+      axios
+        .request(httpMethod)
+        .then(response => { response.data })
+        .catch(e => { console.log(e) })
+        .finally(() => { this.closeAddEditDriverDialog() })
     },
 
     getNationality() {
       axios
-        .get('/nationality')
+        .get('/nationality/')
         .then(response => { this.nationalityItems = response.data })
         .catch(e => { console.log(e) })
     },

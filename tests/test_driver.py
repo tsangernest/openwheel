@@ -33,11 +33,11 @@ def test_get_all_drivers(drf_c: APIClient):
 
 
 @pytest.mark.django_db
-def test_post_driver_required_fields(drf_c: APIClient):
+def test_post_driver_required_fields_zzz(drf_c: APIClient):
     driver_payload: dict = {
         "surname":  "Targaryen",
-        "date_of_birth": "2025-01-01",
-        "nationality": 3,
+        "date_of_birth": "01-Jan-2020",
+        "nationality": 504,
     }
     response = drf_c.post(path=TEST_PATH, data=driver_payload, format="json")
     assert response.status_code == HTTP_201_CREATED
@@ -56,7 +56,7 @@ def test_post_driver_required_fields(drf_c: APIClient):
         json_response["date_of_birth"]
         ==
         datetime
-        .strptime(driver_payload["date_of_birth"], "%Y-%m-%d")
+        .strptime(driver_payload["date_of_birth"], "%d-%b-%Y")
         .strftime("%d-%b-%Y")
     )
 
@@ -72,8 +72,9 @@ def test_update_driver_required_fields(drf_c: APIClient):
     driver_payload: dict = {
         "surname": "Dayne",
         "forename": "Arthur",
-        "date_of_birth": "0260-02-06",
+        "date_of_birth": "06-Feb-0260",
         "ref": "dayne",
+        "nationality": 188,
     }
     response = drf_c.put(path=f"{TEST_PATH}{dummy_driver.id}/", data=driver_payload, format="json")
     assert response.status_code == HTTP_200_OK
@@ -87,6 +88,36 @@ def test_update_driver_required_fields(drf_c: APIClient):
         json_response["date_of_birth"]
         ==
         datetime
-        .strptime(driver_payload["date_of_birth"], "%Y-%m-%d")
+        .strptime(driver_payload["date_of_birth"], "%d-%b-%Y")
         .strftime(format="%d-%b-%Y")
     )
+
+
+@pytest.mark.django_db
+def test_to_internal_value(drf_c: APIClient):
+    driver_payload: dict = {
+        "surname": "Selmy",
+        "date_of_birth": "02-Jun-1236",
+        "nationality": "Costa Rica",
+    }
+    response = drf_c.post(path=TEST_PATH, data=driver_payload, format="json")
+    assert response.status_code == HTTP_201_CREATED
+
+    json_response = response.json()
+    assert json_response["surname"] == driver_payload["surname"]
+    assert (
+        json_response["nationality"]
+        ==
+        Nationality
+        .objects
+        .get(country=driver_payload["nationality"])
+        .country
+    )
+    assert (
+        json_response["date_of_birth"]
+        ==
+        datetime
+        .strptime(driver_payload["date_of_birth"], "%d-%b-%Y")
+        .strftime(format="%d-%b-%Y")
+    )
+
