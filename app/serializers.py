@@ -1,3 +1,4 @@
+from datetime import datetime
 import math
 
 from rest_framework import serializers
@@ -17,6 +18,30 @@ class DriverSerializer(serializers.ModelSerializer):
     class Meta:
         model = Driver
         fields = "__all__"
+
+    def to_internal_value(self, data):
+        print(f"\n{self.initial_data=}\n")
+        internal_date = datetime.strptime(data.get("date_of_birth"), "%d-%b-%Y")
+        internal_country = Nationality.objects.get(id=data["nationality"])
+        data.update({"date_of_birth": internal_date})
+        data.update({"nationality": internal_country})
+        print(f"\n{data=}\n")
+        return data
+
+    # def to_internal_value(self, data):
+    #     new_data = deepcopy(data)
+    #
+    #     date_obj = datetime.strptime(data["date_of_birth"], "%d-%b-%Y").date()
+    #     new_data.update({
+    #         "date_of_birth": date_obj,
+    #     })
+    #     breakpoint()
+    #     return new_data
+
+    # def to_internal_value(self, data):
+    #     breakpoint()
+    #     return super().to_internal_value(data)
+
 
     def to_representation(self, instance):
         return {

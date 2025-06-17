@@ -33,11 +33,11 @@ def test_get_all_drivers(drf_c: APIClient):
 
 
 @pytest.mark.django_db
-def test_post_driver_required_fields_zzz(drf_c: APIClient):
+def test_post_driver_required_fields(drf_c: APIClient):
     driver_payload: dict = {
         "surname":  "Targaryen",
         "date_of_birth": "01-Jan-2020",
-        "nationality": 504,
+        "nationality": 2073,
     }
     response = drf_c.post(path=TEST_PATH, data=driver_payload, format="json")
     assert response.status_code == HTTP_201_CREATED
@@ -74,7 +74,7 @@ def test_update_driver_required_fields(drf_c: APIClient):
         "forename": "Arthur",
         "date_of_birth": "06-Feb-0260",
         "ref": "dayne",
-        "nationality": 188,
+        "nationality": 1866,
     }
     response = drf_c.put(path=f"{TEST_PATH}{dummy_driver.id}/", data=driver_payload, format="json")
     assert response.status_code == HTTP_200_OK
@@ -98,7 +98,7 @@ def test_to_internal_value(drf_c: APIClient):
     driver_payload: dict = {
         "surname": "Selmy",
         "date_of_birth": "02-Jun-1236",
-        "nationality": "Costa Rica",
+        "nationality": 516,
     }
     response = drf_c.post(path=TEST_PATH, data=driver_payload, format="json")
     assert response.status_code == HTTP_201_CREATED
@@ -110,7 +110,7 @@ def test_to_internal_value(drf_c: APIClient):
         ==
         Nationality
         .objects
-        .get(country=driver_payload["nationality"])
+        .get(id=driver_payload["nationality"])
         .country
     )
     assert (
