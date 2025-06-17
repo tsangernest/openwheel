@@ -155,8 +155,9 @@ export default {
       let httpMethod = {
         method: this.driverId ? 'put': 'post',
         url: this.driverId ? `/driver/${this.driverId}/`: '/driver/',
-        data: this.driverId ? this.driverObj: null,
+        data: this.driverObj,
       }
+      console.log(JSON.stringify(httpMethod))
       axios
         .request(httpMethod)
         .then(response => { response.data })
