@@ -54,6 +54,7 @@
                 v-model="driverObj.date_of_birth"
                 label="Birthday"
                 density="compact"
+                hint="Please enter yyyy-mm-dd"
               />
             </v-col>
             <v-col>
