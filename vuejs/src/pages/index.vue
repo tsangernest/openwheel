@@ -109,6 +109,7 @@
                         <th>Date of Birth</th>
                         <th>Nationality</th>
                         <th>Wiki URL</th>
+                        <th>Reference</th>
                       </tr>
                     </tbody>
 
@@ -118,6 +119,7 @@
                         <td>{{ item.date_of_birth }}</td>
                         <td>{{ item.nationality }}</td>
                         <td>{{ item.url }}</td>
+                        <td>{{ item.ref }}</td>
                       </tr>
                     </tbody>
                   </v-table>

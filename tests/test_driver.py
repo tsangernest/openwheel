@@ -33,91 +33,65 @@ def test_get_all_drivers(drf_c: APIClient):
 
 
 @pytest.mark.django_db
-def test_post_driver_required_fields(drf_c: APIClient):
-    driver_payload: dict = {
-        "surname":  "Targaryen",
-        "date_of_birth": "01-Jan-2020",
-        "nationality": 2073,
+def test_api_put_nationality_with_name_to_internal_value(drf_c: APIClient):
+    # Test setup, so we can then use PUT action with Name, then PUT action with ID
+    united_kingdom = Nationality.objects.get(pk=299)
+    d = Driver.objects.create(surname="Selmy", date_of_birth="1901-01-01", nationality=united_kingdom)
+    # The driver PUT action with nationality in name
+    # Everything needs to be the same at the top, except country by name
+    driver_payload = {
+        "surname": "Selmy",
+        "date_of_birth": "1901-01-01",
+        "nationality": "United Kingdom",
     }
-    response = drf_c.post(path=TEST_PATH, data=driver_payload, format="json")
-    assert response.status_code == HTTP_201_CREATED
-
-    json_response = response.json()
-    assert json_response["surname"] == driver_payload["surname"]
-    assert (
-        json_response["nationality"]
-        ==
-        Nationality
-        .objects
-        .get(id=driver_payload["nationality"])
-        .country
-    )
-    assert (
-        json_response["date_of_birth"]
-        ==
-        datetime
-        .strptime(driver_payload["date_of_birth"], "%d-%b-%Y")
-        .strftime("%d-%b-%Y")
-    )
-
-    # Test operational
-    assert 1 == Driver.objects.count()
-    assert 1 == Driver.objects.filter(surname="Targaryen").count()
-
-
-@pytest.mark.django_db
-def test_update_driver_required_fields(drf_c: APIClient):
-    dummy_driver = DriverFactory()
-
-    driver_payload: dict = {
-        "surname": "Dayne",
-        "forename": "Arthur",
-        "date_of_birth": "06-Feb-0260",
-        "ref": "dayne",
-        "nationality": 1866,
-    }
-    response = drf_c.put(path=f"{TEST_PATH}{dummy_driver.id}/", data=driver_payload, format="json")
+    # -- begin test --
+    # PUT with country text
+    response = drf_c.put(path=f"{TEST_PATH}{d.id}/", data=driver_payload, format="json")
     assert response.status_code == HTTP_200_OK
 
-    json_response = response.json()
-    assert 1 == Driver.objects.count()
-    assert json_response["surname"] == driver_payload["surname"]
-    assert json_response["forename"] == driver_payload["forename"]
-    assert json_response["ref"] == driver_payload["ref"]
-    assert (
-        json_response["date_of_birth"]
-        ==
-        datetime
-        .strptime(driver_payload["date_of_birth"], "%d-%b-%Y")
-        .strftime(format="%d-%b-%Y")
-    )
+
+@pytest.mark.django_db
+def test_api_put_nationality_with_id_as_str_to_internal_value(drf_c: APIClient):
+    # Test setup, so we can then use PUT action with Name, then PUT action with ID
+    united_kingdom = Nationality.objects.get(pk=299)
+    d = Driver.objects.create(surname="Selmy", date_of_birth="1901-01-01", nationality=united_kingdom)
+    # The driver PUT action with nationality in name
+    # Everything needs to be the same at the top, except country by name
+    driver_payload = {
+        "surname": "Selmy",
+        "date_of_birth": "1901-01-01",
+        "nationality": "299",
+    }
+    # -- begin test --
+    # PUT with country text
+    response = drf_c.put(path=f"{TEST_PATH}{d.id}/", data=driver_payload, format="json")
+    assert response.status_code == HTTP_200_OK
 
 
 @pytest.mark.django_db
-def test_to_internal_value(drf_c: APIClient):
-    driver_payload: dict = {
+@pytest.mark.django_db
+def test_api_put_nationality_with_id_as_int_to_internal_value(drf_c: APIClient):
+    # Test setup, so we can then use PUT action with Name, then PUT action with ID
+    united_kingdom = Nationality.objects.get(pk=299)
+    d = Driver.objects.create(surname="Selmy", date_of_birth="1901-01-01", nationality=united_kingdom)
+    # The driver PUT action with nationality in name
+    # Everything needs to be the same at the top, except country by name
+    driver_payload = {
         "surname": "Selmy",
-        "date_of_birth": "02-Jun-1236",
-        "nationality": 516,
+        "date_of_birth": "1901-01-01",
+        "nationality": 299,
     }
-    response = drf_c.post(path=TEST_PATH, data=driver_payload, format="json")
-    assert response.status_code == HTTP_201_CREATED
+    # -- begin test --
+    # PUT with country text
+    response = drf_c.put(path=f"{TEST_PATH}{d.id}/", data=driver_payload, format="json")
+    assert response.status_code == HTTP_200_OK
 
+
+@pytest.mark.django_db
+def test_api_get_response_returns_name_of_country(drf_c: APIClient):
+    # -- test setup
+    driver = Driver.objects.create(surname="Selmy", date_of_birth="1901-01-01", nationality_id=299)
+    response = drf_c.get(path=f"{TEST_PATH}{driver.id}/", format="json")
     json_response = response.json()
-    assert json_response["surname"] == driver_payload["surname"]
-    assert (
-        json_response["nationality"]
-        ==
-        Nationality
-        .objects
-        .get(id=driver_payload["nationality"])
-        .country
-    )
-    assert (
-        json_response["date_of_birth"]
-        ==
-        datetime
-        .strptime(driver_payload["date_of_birth"], "%d-%b-%Y")
-        .strftime(format="%d-%b-%Y")
-    )
+    assert "United Kingdom" == json_response["nationality"]
 

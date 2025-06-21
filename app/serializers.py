@@ -20,41 +20,30 @@ class DriverSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
     def to_internal_value(self, data):
-        print(f"\n{self.initial_data=}\n")
-        internal_date = datetime.strptime(data.get("date_of_birth"), "%d-%b-%Y")
-        internal_country = Nationality.objects.get(id=data["nationality"])
-        data.update({"date_of_birth": internal_date})
-        data.update({"nationality": internal_country})
-        print(f"\n{data=}\n")
+        raw_ref: str = data["ref"].lower() if data.get("ref") else ""
+        data["ref"] = raw_ref
+
+        data["nationality"] = str(data.get("nationality"))
+        if not data.get("nationality").isnumeric():
+            data["nationality"] = Nationality.objects.filter(country=data["nationality"]).first()
+        else:
+            data["nationality"] = Nationality.objects.filter(pk=data["nationality"]).first()
+
         return data
-
-    # def to_internal_value(self, data):
-    #     new_data = deepcopy(data)
-    #
-    #     date_obj = datetime.strptime(data["date_of_birth"], "%d-%b-%Y").date()
-    #     new_data.update({
-    #         "date_of_birth": date_obj,
-    #     })
-    #     breakpoint()
-    #     return new_data
-
-    # def to_internal_value(self, data):
-    #     breakpoint()
-    #     return super().to_internal_value(data)
-
 
     def to_representation(self, instance):
         return {
             "id": instance.id,
-            "ref": instance.ref,
-            "number": instance.number,
+            "nationality": instance.nationality.country,
+            "surname": instance.surname,
             "code": instance.code,
             "forename": instance.forename,
-            "surname": instance.surname,
-            "date_of_birth": instance.date_of_birth.strftime(format="%d-%b-%Y"),
-            "nationality": instance.nationality.country,
+            "date_of_birth": instance.date_of_birth,
             "url": instance.url,
+            "number": instance.number,
+            "ref": instance.ref,
         }
+
 
 class ConstructorSerializer(serializers.ModelSerializer):
     class Meta:
