@@ -1,3 +1,4 @@
+from datetime import datetime
 import math
 
 from rest_framework import serializers
@@ -18,18 +19,31 @@ class DriverSerializer(serializers.ModelSerializer):
         model = Driver
         fields = "__all__"
 
+    def to_internal_value(self, data):
+        raw_ref: str = data["ref"].lower() if data.get("ref") else ""
+        data["ref"] = raw_ref
+
+        data["nationality"] = str(data.get("nationality"))
+        if not data.get("nationality").isnumeric():
+            data["nationality"] = Nationality.objects.filter(country=data["nationality"]).first()
+        else:
+            data["nationality"] = Nationality.objects.filter(pk=data["nationality"]).first()
+
+        return data
+
     def to_representation(self, instance):
         return {
             "id": instance.id,
-            "ref": instance.ref,
-            "number": instance.number,
+            "nationality": instance.nationality.country,
+            "surname": instance.surname,
             "code": instance.code,
             "forename": instance.forename,
-            "surname": instance.surname,
-            "date_of_birth": instance.date_of_birth.strftime(format="%d-%b-%Y"),
-            "nationality": instance.nationality.country,
+            "date_of_birth": instance.date_of_birth,
             "url": instance.url,
+            "number": instance.number,
+            "ref": instance.ref,
         }
+
 
 class ConstructorSerializer(serializers.ModelSerializer):
     class Meta:

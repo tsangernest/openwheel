@@ -3,12 +3,11 @@ from pathlib import Path
 import pytest
 from django.contrib.auth.models import User
 from django.core import management
-from pytest_django import DjangoDbBlocker
 from rest_framework.test import APIClient
 
 
 @pytest.fixture(scope="session")
-def django_db_setup(django_db_setup, django_db_blocker: DjangoDbBlocker):
+def django_db_setup(django_db_setup, django_db_blocker):
     with django_db_blocker.unblock():
         fixtures_path = Path("/app/tests/fixtures/")
 
@@ -19,11 +18,13 @@ def django_db_setup(django_db_setup, django_db_blocker: DjangoDbBlocker):
 
 @pytest.fixture
 def drf_c() -> APIClient:
-    u: User = User.objects.create(first_name="test_open",
-                                  last_name="test_wheel",
-                                  username="test_openwheel_user",
-                                  email="openwheel_user@google.ca",
-                                  is_active=True)
+    u: User = User.objects.create(
+        first_name="test_open",
+        last_name="test_wheel",
+        username="test_openwheel_user",
+        email="openwheel_user@google.ca",
+        is_active=True,
+    )
     c: APIClient = APIClient()
     c.force_authenticate(user=u)
 
