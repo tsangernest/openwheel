@@ -69,7 +69,6 @@ def test_api_put_nationality_with_id_as_str_to_internal_value(drf_c: APIClient):
 
 
 @pytest.mark.django_db
-@pytest.mark.django_db
 def test_api_put_nationality_with_id_as_int_to_internal_value(drf_c: APIClient):
     # Test setup, so we can then use PUT action with Name, then PUT action with ID
     united_kingdom = Nationality.objects.get(pk=299)
@@ -89,9 +88,66 @@ def test_api_put_nationality_with_id_as_int_to_internal_value(drf_c: APIClient):
 
 @pytest.mark.django_db
 def test_api_get_response_returns_name_of_country(drf_c: APIClient):
-    # -- test setup
+    # -- test setup --
     driver = Driver.objects.create(surname="Selmy", date_of_birth="1901-01-01", nationality_id=299)
+    # -- begin test --
     response = drf_c.get(path=f"{TEST_PATH}{driver.id}/", format="json")
     json_response = response.json()
+
+    # Compare what we want to be displayed
+    # - i.e., left is what we want
     assert "United Kingdom" == json_response["nationality"]
+
+
+@pytest.mark.django_db
+def test_api_post_country_with_id_as_str_to_internal_value(drf_c: APIClient):
+    driver_payload = {
+        "surname": "Snow",
+        "date_of_birth": "1901-01-01",
+        "nationality": "299",
+    }
+    response = drf_c.post(path=f"{TEST_PATH}", data=driver_payload, format="json")
+    assert response.status_code == HTTP_201_CREATED
+
+
+@pytest.mark.django_db
+def test_api_get_driver_date_of_birth_to_repr_format(drf_c: APIClient):
+    # -- test setup --
+    driver = Driver.objects.create(surname="Stark", date_of_birth="1999-06-21", nationality_id=299)
+    # -- begin test --
+    response = drf_c.get(path=f"{TEST_PATH}{driver.id}/", format="json")
+    json_response = response.json()
+    assert "1999-June-21" == json_response["date_of_birth"]
+
+
+@pytest.mark.django_db
+def test_api_put_driver_date_of_birth_full_to_internal_value(drf_c: APIClient):
+    # -- test setup --
+    driver = Driver.objects.create(surname="Stark", date_of_birth="1998-06-21", nationality_id=299)
+
+    # Birthday we want to send that is displayed from the frontend
+    driver_payload = {
+        "surname": "Stark",
+        "date_of_birth": "1998-June-21",
+        "nationality": 299,
+    }
+    # -- begin test --
+    response = drf_c.put(path=f"{TEST_PATH}{driver.id}/", data=driver_payload, format="json")
+    assert HTTP_200_OK == response.status_code
+
+
+@pytest.mark.django_db
+def test_api_put_driver_date_of_birth_user_input_to_internal_value(drf_c: APIClient):
+    # -- test setup --
+    driver = Driver.objects.create(surname="Stark", date_of_birth="1998-06-21", nationality_id=299)
+
+    # Birthday we want to send that is displayed from the frontend
+    driver_payload = {
+        "surname": "Stark",
+        "date_of_birth": "1996-06-21",
+        "nationality": 299,
+    }
+    # -- begin test --
+    response = drf_c.put(path=f"{TEST_PATH}{driver.id}/", data=driver_payload, format="json")
+    assert HTTP_200_OK == response.status_code
 

@@ -19,30 +19,46 @@ class DriverSerializer(serializers.ModelSerializer):
         model = Driver
         fields = "__all__"
 
+# YES
+    # def to_internal_value(self, data):
+    #     data["ref"] = data["ref"].lower() if data.get("ref") else ""
+    #     data["nationality"] = self._get_country_obj(str(data.get("nationality")))
+    #
+    #     return data
+
     def to_internal_value(self, data):
-        raw_ref: str = data["ref"].lower() if data.get("ref") else ""
-        data["ref"] = raw_ref
-
-        data["nationality"] = str(data.get("nationality"))
-        if not data.get("nationality").isnumeric():
-            data["nationality"] = Nationality.objects.filter(country=data["nationality"]).first()
-        else:
-            data["nationality"] = Nationality.objects.filter(pk=data["nationality"]).first()
-
+        data.update({
+            "ref": data["ref"].lower() if data.get("ref") else "",
+            "date_of_birth": self._format_date_repr(data["date_of_birth"]),
+            "nationality": self._get_country_obj(str(data.get("nationality"))),
+        })
         return data
 
     def to_representation(self, instance):
         return {
             "id": instance.id,
-            "nationality": instance.nationality.country,
-            "surname": instance.surname,
+            "ref": instance.ref,
+            "number": instance.number,
             "code": instance.code,
             "forename": instance.forename,
-            "date_of_birth": instance.date_of_birth,
+            "surname": instance.surname,
+            "date_of_birth": instance.date_of_birth.strftime("%Y-%B-%d"),
+            "nationality": instance.nationality.country,
             "url": instance.url,
-            "number": instance.number,
-            "ref": instance.ref,
         }
+
+    @staticmethod
+    def _format_date_repr(date) -> str | datetime:
+        try:
+            return datetime.strptime(date, "%Y-%m-%d")
+        except ValueError:
+            return datetime.strptime(date, "%Y-%B-%d")
+
+    @staticmethod
+    def _get_country_obj(country) -> Nationality:
+        if country.isnumeric():
+            return Nationality.objects.filter(pk=country).first()
+        return Nationality.objects.filter(country=country).first()
 
 
 class ConstructorSerializer(serializers.ModelSerializer):
