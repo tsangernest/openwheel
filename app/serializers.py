@@ -19,18 +19,15 @@ class DriverSerializer(serializers.ModelSerializer):
         model = Driver
         fields = "__all__"
 
-# YES
-    # def to_internal_value(self, data):
-    #     data["ref"] = data["ref"].lower() if data.get("ref") else ""
-    #     data["nationality"] = self._get_country_obj(str(data.get("nationality")))
-    #
-    #     return data
-
     def to_internal_value(self, data):
         data.update({
             "ref": data["ref"].lower() if data.get("ref") else "",
+            "number": data["number"]if data.get("number") else "",
+            "code": data["code"] if data.get("code") else "",
+            "forename": data["forename"] if data.get("forename") else "",
             "date_of_birth": self._format_date_repr(data["date_of_birth"]),
             "nationality": self._get_country_obj(str(data.get("nationality"))),
+            "url": data["url"] if data.get("url") else "",
         })
         return data
 
@@ -47,6 +44,7 @@ class DriverSerializer(serializers.ModelSerializer):
             "url": instance.url,
         }
 
+    # -- helper methods for DriverSerializer --
     @staticmethod
     def _format_date_repr(date) -> str | datetime:
         try:
