@@ -37,7 +37,7 @@
         <v-btn
           text="Delete"
           border
-          :disabled="!confirmToggle"
+          :disabled="(!confirmToggle) + (confirmDeleteLastname !== `${driver.surname}`) "
           @click="deleteDriver"
         />
         <v-spacer/>
@@ -54,7 +54,7 @@
 
 
 <script>
-// import axios from 'axios'
+import axios from 'axios'
 
 export default {
   name: 'RemoveVerificationDialog',
@@ -85,10 +85,11 @@ export default {
     },
 
     deleteDriver() {
-      console.log(this.confirmDeleteLastname)
       if(this.confirmDeleteLastname === `${this.driver.surname}`) {
-        console.log('-deleting driver -\n', JSON.stringify(this.driver))
-        this.closeRemoveVerificationDialog()
+        axios
+          .delete(`/driver/${this.driver.id}/`)
+          .then(response => { if(response.status === 204) this.closeRemoveVerificationDialog() })
+          .catch(e => console.log(e))
       }
     },
   },
