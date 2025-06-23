@@ -216,8 +216,6 @@ export default {
     },
 
     removeDriver(item) {
-      // This doesn't actually remove anything right now
-      console.log('-removeDriver-\n', JSON.stringify(item))
       this.fullDriverObj = item
       this.showRemoveVerificationDialog = true
     },
