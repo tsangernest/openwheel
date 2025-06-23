@@ -1,7 +1,9 @@
-from datetime import datetime
-
 import pytest
-from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED
+from rest_framework.status import (
+    HTTP_200_OK,
+    HTTP_201_CREATED,
+    HTTP_204_NO_CONTENT,
+)
 from rest_framework.test import APIClient
 
 from app.models import Driver, Nationality
@@ -150,4 +152,14 @@ def test_api_put_driver_date_of_birth_user_input_to_internal_value(drf_c: APICli
     # -- begin test --
     response = drf_c.put(path=f"{TEST_PATH}{driver.id}/", data=driver_payload, format="json")
     assert HTTP_200_OK == response.status_code
+
+
+@pytest.mark.django_db
+def test_api_remove_driver(drf_c: APIClient):
+    # -- test setup --
+    driver = DriverFactory()
+
+    # -- begin test --
+    response = drf_c.delete(path=f"{TEST_PATH}{driver.id}/", format="json")
+    assert response.status_code == HTTP_204_NO_CONTENT
 
