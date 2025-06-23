@@ -134,6 +134,11 @@
           v-model:driver-id="driverId"
         />
 
+        <remove-verification-dialog
+          v-model="showRemoveVerificationDialog"
+          v-model:driver="fullDriverObj"
+        />
+
         <section class="section">
           <router-view/>
         </section>
@@ -143,7 +148,6 @@
           <vue-dropzone
             :options="dropzoneOptions"
           />
-
         </v-card>
 
         <footer class="footer">
@@ -162,18 +166,22 @@
 import axios from 'axios'
 import vueDropzone from 'dropzone-vue3'
 import AddEditDriverDialog from '../components/AddEditDriverDialog'
+import RemoveVerificationDialog from '../components/RemoveVerificationDialog'
 
 export default {
   name: 'Index',
 
   components: {
+    // Yup, that is right. One Dialog passes ID, the other passes driverObj...
     AddEditDriverDialog,
+    RemoveVerificationDialog,
     vueDropzone,
   },
 
   data() {
     return {
       driverId: 0,
+      fullDriverObj: {},
       // * BEGIN Driver table *
       driverTableLoading: false,
       driverHeaders: [
@@ -197,12 +205,12 @@ export default {
       // Toggles
       showMobileMenu: false,
       showAddEditDialog: false,
+      showRemoveVerificationDialog: false,
     }
   },
 
   methods: {
     editDriver(item) {
-      console.log('-editDriver-\n', JSON.stringify(item))
       this.driverId = item.id
       this.showAddEditDialog = true
     },
@@ -210,6 +218,8 @@ export default {
     removeDriver(item) {
       // This doesn't actually remove anything right now
       console.log('-removeDriver-\n', JSON.stringify(item))
+      this.fullDriverObj = item
+      this.showRemoveVerificationDialog = true
     },
 
     getDrivers({ page, itemsPerPage, sortBy }) {

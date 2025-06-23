@@ -152,14 +152,11 @@ export default {
     },
 
     saveDriver() {
-      console.log('In save driver')
-      console.log(JSON.stringify(this.driverObj))
       let httpMethod = {
         method: this.driverId ? 'put': 'post',
         url: this.driverId ? `/driver/${this.driverId}/`: '/driver/',
         data: this.driverObj,
       }
-      console.log(JSON.stringify(httpMethod))
       axios
         .request(httpMethod)
         .then(response => { response.data })
