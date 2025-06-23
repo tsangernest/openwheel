@@ -24,6 +24,12 @@
       <v-divider/>
       <v-card-actions class="bg-surface-light">
         <v-btn
+          text="Delete"
+          border
+          :disabled="!confirmToggle"
+        />
+        <v-spacer/>
+        <v-btn
           text="Cancel"
           border
           @click="closeRemoveVerificationDialog"
@@ -60,6 +66,7 @@ export default {
 
   methods: {
     closeRemoveVerificationDialog() {
+      this.confirmToggle = false
       this.$emit('update:modelValue', false)
     },
   },
