@@ -1,3 +1,4 @@
+from datetime import datetime
 import math
 
 from rest_framework import serializers
@@ -18,6 +19,18 @@ class DriverSerializer(serializers.ModelSerializer):
         model = Driver
         fields = "__all__"
 
+    def to_internal_value(self, data):
+        data.update({
+            "ref": data["ref"].lower() if data.get("ref") else "",
+            "number": data["number"]if data.get("number") else "",
+            "code": data["code"] if data.get("code") else "",
+            "forename": data["forename"] if data.get("forename") else "",
+            "date_of_birth": self._format_date_repr(data["date_of_birth"]),
+            "nationality": self._get_country_obj(str(data.get("nationality"))),
+            "url": data["url"] if data.get("url") else "",
+        })
+        return data
+
     def to_representation(self, instance):
         return {
             "id": instance.id,
@@ -26,10 +39,25 @@ class DriverSerializer(serializers.ModelSerializer):
             "code": instance.code,
             "forename": instance.forename,
             "surname": instance.surname,
-            "date_of_birth": instance.date_of_birth.strftime(format="%d-%b-%Y"),
+            "date_of_birth": instance.date_of_birth.strftime("%Y-%B-%d"),
             "nationality": instance.nationality.country,
             "url": instance.url,
         }
+
+    # -- helper methods for DriverSerializer --
+    @staticmethod
+    def _format_date_repr(date) -> str | datetime:
+        try:
+            return datetime.strptime(date, "%Y-%m-%d")
+        except ValueError:
+            return datetime.strptime(date, "%Y-%B-%d")
+
+    @staticmethod
+    def _get_country_obj(country) -> Nationality:
+        if country.isnumeric():
+            return Nationality.objects.filter(pk=country).first()
+        return Nationality.objects.filter(country=country).first()
+
 
 class ConstructorSerializer(serializers.ModelSerializer):
     class Meta:

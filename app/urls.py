@@ -18,7 +18,7 @@ router.register(prefix=r"qualifying", viewset=QualifyingViewSet)
 router.register(prefix=r"laptime", viewset=LapTimeViewSet)
 router.register(prefix=r"pitstop", viewset=PitStopViewSet)
 router.register(prefix=r"driverstanding", viewset=DriverStandingViewSet)
-router.register(r"constructorstanding", ConstructorStandingViewSet)
+router.register(prefix=r"constructorstanding", viewset=ConstructorStandingViewSet)
 
 
 urlpatterns = [

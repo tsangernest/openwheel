@@ -21,7 +21,7 @@ def _process_quali_times(*, all_qs):
 
     for quali in all_qs:
         # This isn't pretty, nor the way...
-        if isinstance(quali, float):
+        if isinstance(quali, float) or quali == "\\N":
             converted_quali_time.append(None)
         else:
             dt_obj = datetime.strptime(quali, "%M:%S.%f")
@@ -48,13 +48,24 @@ def insert_driver(apps, schema_editor):
               mode="r",
               encoding="utf-8") as f:
 
-        csvfile = csv.reader(f)
+        cols = [
+            "driverId",
+            "driverRef",
+            "number",
+            "code",
+            "forename",
+            "surname",
+            "dob",
+            "nationality",
+            "url",
+        ]
+        csv_file = pandas.read_csv(f, header=0, usecols=cols)
+
         Driver = apps.get_model(app_label="app", model_name="Driver")
         Nationality = apps.get_model(app_label="app", model_name="Nationality")
-        driver_objs = []
 
-        next(csvfile)   # skipping column names
-        for d_id, ref, num, code, first, last, dob, nation, url in csvfile:
+        driver_objs = []
+        for d_id, ref, num, code, first, last, dob, nation, url in csv_file.to_numpy():
             n = Nationality.objects.filter(demonym=nation).first()
             d = Driver(id=d_id,
                        ref=ref,
@@ -62,8 +73,8 @@ def insert_driver(apps, schema_editor):
                        code=code,
                        forename=first,
                        surname=last,
-                       nationality=n,
                        date_of_birth=dob,
+                       nationality=n,
                        url=url)
             driver_objs.append(d)
         Driver.objects.bulk_create(driver_objs)
@@ -74,13 +85,20 @@ def insert_constructor(apps, schema_editor):
               mode="r",
               encoding="utf-8") as f:
 
-        csvfile = csv.reader(f)
+        cols = [
+            "constructorId",
+            "constructorRef",
+            "name",
+            "nationality",
+            "url",
+        ]
+        csv_file = pandas.read_csv(f, header=0, usecols=cols)
+
         Constructor = apps.get_model(app_label="app", model_name="Constructor")
         Nationality = apps.get_model(app_label="app", model_name="Nationality")
-        constructor_objs = []
 
-        next(csvfile)   # skipping column names
-        for c_id, ref, name, nation, url in csvfile:
+        constructor_objs = []
+        for c_id, ref, name, nation, url in csv_file.to_numpy():
             n = Nationality.objects.filter(demonym=nation).first()
             c = Constructor(id=c_id,
                             ref=ref,
@@ -96,19 +114,30 @@ def insert_circuit(apps, schema_editor):
               mode="r",
               encoding="utf-8") as f:
 
-        csvfile = csv.reader(f)
+        cols = [
+            "circuitId",
+            "circuitRef",
+            "name",
+            "location",
+            "country",
+            "lat",
+            "lng",
+            "alt",
+            "url",
+        ]
+        csv_file = pandas.read_csv(f, header=0, usecols=cols)
+
         Circuit = apps.get_model(app_label="app", model_name="Circuit")
         Nationality = apps.get_model(app_label="app", model_name="Nationality")
-        circuit_objs = []
 
-        next(csvfile)   # skipping column names
-        for c_id, ref, name, loc, country, y, x, alt, url in csvfile:
-            country = Nationality.objects.filter(country=country).first()
-            circuit = Circuit(id=c_id,
+        circuit_objs = []
+        for circ_id, ref, name, loc, country, y, x, alt, url in csv_file.to_numpy():
+            n = Nationality.objects.filter(country=country).first()
+            circuit = Circuit(id=circ_id,
                               ref=ref,
                               name=name,
                               location=loc,
-                              country=country,
+                              country=n,
                               longitude=x,
                               latitude=y,
                               altitude=alt,
