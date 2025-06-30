@@ -20,6 +20,9 @@ class NationalityViewSet(viewsets.ModelViewSet):
     queryset = Nationality.objects.all()
     serializer_class = NationalitySerializer
 
+    def filter_queryset(self, queryset):
+        return queryset.filter(deleted_at__isnull=True)
+
 
 class DriverViewSet(viewsets.ModelViewSet):
     queryset = Driver.objects.all()
