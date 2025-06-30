@@ -11,10 +11,7 @@ def test_normalize_nationality(migrator):
     nationality = new_state.apps.get_model("app", "Nationality")
     assert nationality.objects.count() == 1502
 
-
-
-
-
     breakpoint()
+    print(f"\n\nEnd of processing...")
     migrator.reset()
 
