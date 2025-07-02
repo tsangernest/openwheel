@@ -9,3 +9,8 @@ class NationalityManager(models.Manager):
         #    in the previous branch
         return super().get_queryset().exclude(deleted_at__isnull=False)
 
+
+class _DeprecatedManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset()
+
