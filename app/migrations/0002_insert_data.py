@@ -394,6 +394,10 @@ class Migration(migrations.Migration):
             reverse_code=migrations.RunPython.noop,
             atomic=True,
         ),
-        migrations.RunPython(insert_constructor_standing, migrations.RunPython.noop, True)
+        migrations.RunPython(
+            code=insert_constructor_standing,
+            reverse_code=migrations.RunPython.noop,
+            atomic=True,
+        ),
     ]
 

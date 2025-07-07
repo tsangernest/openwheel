@@ -2,10 +2,16 @@ from functools import cached_property
 
 from django.db import models
 
+from app.managers import _DeprecatedManager, NationalityManager
+
 
 class Nationality(models.Model):
     demonym = models.CharField(max_length=255)
     country = models.CharField(max_length=255)
+    deleted_at = models.DateTimeField(null=True, blank=True)
+
+    objects = NationalityManager()
+    deprecated_objects = _DeprecatedManager()
 
     class Meta:
         ordering = ["demonym"]

@@ -11,7 +11,7 @@ from app.models import (Circuit, Constructor, ConstructorStanding, Driver,
 class NationalitySerializer(serializers.ModelSerializer):
     class Meta:
         model = Nationality
-        fields = "__all__"
+        fields = ["id", "country", "demonym"]
 
 
 class DriverSerializer(serializers.ModelSerializer):
