@@ -159,6 +159,7 @@ export default {
       }
       axios
         .request(httpMethod)
+        // The emit to get reactive table needs only the sortBy parameter
         .then(response => { if(response.status === 201 || response.status === 200) this.$emit('refreshDriversTable', {sortBy: ''}) })
         .catch(e => { console.log(e) })
         .finally(() => { this.closeAddEditDriverDialog() })
