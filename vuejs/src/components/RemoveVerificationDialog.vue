@@ -88,7 +88,12 @@ export default {
       if(this.confirmDeleteLastname === `${this.driver.surname}`) {
         axios
           .delete(`/driver/${this.driver.id}/`)
-          .then(response => { if(response.status === 204) this.closeRemoveVerificationDialog() })
+          .then(response => {
+            if(response.status === 204) {
+              this.$emit('refreshDriversTable', {sortBy: ''})
+              this.closeRemoveVerificationDialog()
+            }
+          })
           .catch(e => console.log(e))
       }
     },
