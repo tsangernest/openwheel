@@ -159,10 +159,14 @@ export default {
       }
       axios
         .request(httpMethod)
-        // The emit to get reactive table needs only the sortBy parameter
-        .then(response => { if(response.status === 201 || response.status === 200) this.$emit('refreshDriversTable', {sortBy: ''}) })
+        .then(response => {
+          if(response.status === 201 || response.status === 200) {
+            // The emit to get reactive table needs only the sortBy parameter
+            this.$emit('refreshDriversTable', {sortBy: ''})
+            this.closeAddEditDriverDialog()
+          }
+        })
         .catch(e => { console.log(e) })
-        .finally(() => { this.closeAddEditDriverDialog() })
     },
 
     getNationality() {
