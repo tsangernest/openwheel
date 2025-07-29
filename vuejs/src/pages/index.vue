@@ -138,6 +138,7 @@
         <remove-verification-dialog
           v-model="showRemoveVerificationDialog"
           v-model:driver="fullDriverObj"
+          @refresh-drivers-table="getDrivers"
         />
 
         <section class="section">
