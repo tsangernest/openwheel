@@ -159,7 +159,7 @@ export default {
       }
       axios
         .request(httpMethod)
-        .then(response => { response.data })
+        .then(response => { if(response.status === 201 || response.status === 200) this.$emit('refreshDriversTable', {sortBy: ''}) })
         .catch(e => { console.log(e) })
         .finally(() => { this.closeAddEditDriverDialog() })
     },

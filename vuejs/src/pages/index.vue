@@ -132,6 +132,7 @@
         <add-edit-driver-dialog
           v-model="showAddEditDialog"
           v-model:driver-id="driverId"
+          @refresh-drivers-table="getDrivers"
         />
 
         <remove-verification-dialog
@@ -190,7 +191,10 @@ export default {
         { title: 'Last Name', key: 'surname', sortable: true, nowrap: true },
         { title: 'Actions', key: 'actions', sortable: false, align: 'end', nowrap: true },
       ],
+      drivers: [],
+      itemsPerPage: 10,
       itemsPerPageOptions: [5, 10, 25, 100],
+      totalItems: 0,
       drfParams: {},
       // * END Drivers Table *
 
