@@ -6,18 +6,18 @@ from django.utils import timezone
 
 
 def mark_old_countries_as_deleted_at(apps, schema_editor):
-    Nationality = apps.get_model('app', 'Nationality')
+    Nationality = apps.get_model("app", "Nationality")
     nationality_objs = Nationality.objects.all()
     for n in nationality_objs:
         n.deleted_at = timezone.now()
-    Nationality.objects.bulk_update(nationality_objs, ['deleted_at'])
+    Nationality.objects.bulk_update(nationality_objs, ["deleted_at"])
 
 def assign_drivers_to_new_country_values(apps, schema_editor):
     # Models that we're working with
     Nationality = apps.get_model("app", "Nationality")
     Driver = apps.get_model("app", "Driver")
 
-    set_nationality = Nationality.objects.order_by('country').distinct('country')
+    set_nationality = Nationality.objects.order_by("country").distinct("country")
 
     # Create all the new ones (unique)
     Nationality.objects.bulk_create([Nationality(country=i.country, demonym=i.demonym) for i in set_nationality])
@@ -27,7 +27,7 @@ def assign_drivers_to_new_country_values(apps, schema_editor):
     driver_objs = Driver.objects.all()
     for d in driver_objs:
         d.nationality = uni_n.get(country=d.nationality.country)
-    Driver.objects.bulk_update(driver_objs, ['nationality'])
+    Driver.objects.bulk_update(driver_objs, ["nationality"])
 
 
 class Migration(migrations.Migration):
