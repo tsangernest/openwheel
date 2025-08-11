@@ -98,7 +98,7 @@ def test_api_get_response_returns_name_of_country(drf_c: APIClient):
 
     # Compare what we want to be displayed
     # - i.e., left is what we want
-    assert "United Kingdom" == json_response["nationality"]
+    assert "United Kingdom" == json_response["country"]
 
 
 @pytest.mark.django_db

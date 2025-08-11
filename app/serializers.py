@@ -40,7 +40,8 @@ class DriverSerializer(serializers.ModelSerializer):
             "forename": instance.forename,
             "surname": instance.surname,
             "date_of_birth": instance.date_of_birth.strftime("%Y-%B-%d"),
-            "nationality": instance.nationality.country,
+            "nationality": instance.nationality.demonym,
+            "country": instance.nationality.country,
             "url": instance.url,
         }
 

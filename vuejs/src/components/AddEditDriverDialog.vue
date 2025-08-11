@@ -60,7 +60,7 @@
             </v-col>
             <v-col>
               <v-select
-                v-model="driverObj.nationality"
+                v-model="driverObj.country"
                 label="Country"
                 density="compact"
                 :items="nationalityItems"
